@@ -45,11 +45,11 @@ Inspect "g" by hovering the cursor over the variable
 Build a lambda expression "f" by compiling "g"
 ![debug6.png](https://github.com/Proxem/TheaNet/blob/master/images/debug6.png)
 
-Press "F11" and step into the compile function
-![debug7.png](https://github.com/Proxem/TheaNet/blob/master/images/debug7.png)
+Press "F11" and step into the compiled function
+![debug7.png](https://github.com/Proxem/TheaNet/blob/master/images/debug8.png)
 
 Return to the caller and check the result
-![debug8.png](https://github.com/Proxem/TheaNet/blob/master/images/debug8.png)
+![debug8.png](https://github.com/Proxem/TheaNet/blob/master/images/debug9.png)
 
 ## Contact
 
