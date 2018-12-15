@@ -2,8 +2,8 @@
 
 TheaNet is an optimized library for deep learning models written in C\# and developed at [Proxem](https://proxem.com).
 The library is inspired by python's [theano](http://deeplearning.net/software/theano/) library and offers similar possibilities.
-Automatic gradient differentiation allows to create complex model and run them with simple commands with all the backpropagation being taken care of by the library.
-TheaNet generates readable code in C\# with the possibility to step-in the generated code and debug it.  
+Automatic gradient differentiation allows to create complex models and run them with simple commands with all the backpropagation being taken care of by the library.
+TheaNet generates readable code in C\# with the possibility to step in the generated code and debug it.  
 
 ## Table of contents
 
@@ -14,8 +14,7 @@ TheaNet generates readable code in C\# with the possibility to step-in the gener
 
 ## Requirements
 
-TheaNet is currently developed in .Net Framework 4.7.2. Due to CodeDom, the library for code generation, that is not yet compatible with .Net Core we don't guarantee that TheaNet will work outside of Windows environment.
-We are currently working on finding a substitute to CodeDom that will work with .Net Core in order to make our library multi-platform.
+TheaNet is currently developed in .Net Framework 4.7.2. 
 
 TheaNet is integrated with our [NumNet](https://github.com/Proxem/NumNet) and [BlasNet](https://github.com/Proxem/BlasNet) libraries and require both libraries to work.  
 
@@ -23,6 +22,10 @@ TheaNet is integrated with our [NumNet](https://github.com/Proxem/NumNet) and [B
 
 We provide a Nuget Package of **TheaNet** to facilitate its use. It's available on [Nuget.org](https://www.nuget.org/packages/Proxem.TheaNet/). 
 Symbols are also available to facilitate debugging inside the package.
+
+## Debugging with TheaNet
+
+![Define a scalar variable names "x"](https://github.com/Proxem/TheaNet/blob/master/images/debug1.png)
 
 ## Contact
 
