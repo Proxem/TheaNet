@@ -39,7 +39,7 @@ namespace Proxem.TheaNet.Samples
 
             var z = x + y;
 
-            var f = T.Function(x, y, z);
+            var f = T.Function((x, y), z);
 
             Console.WriteLine(f(2, 3));
             Console.WriteLine(f(16.3f, 12.1f));

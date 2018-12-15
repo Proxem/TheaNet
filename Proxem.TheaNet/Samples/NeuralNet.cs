@@ -102,7 +102,7 @@ namespace Proxem.TheaNet.Samples
                     //updates[l.b] = l.b - eta * T.Grad(error, l.b);
                 }
 
-                var eval = T.Function(input, expected, output: error, updates: updates);
+                var eval = T.Function(input: (input, expected), output: error, updates: updates);
 
                 for (int epoch = 0; epoch < timeout; epoch++)
                 {

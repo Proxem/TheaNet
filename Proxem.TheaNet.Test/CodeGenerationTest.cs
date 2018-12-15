@@ -68,7 +68,7 @@ namespace Proxem.TheaNet.Test
             var cost = 0.5f * Op.Norm2(y);
             var g = Op.Grad(cost, x);
 
-            var f = Op.Function(input: x, output1: cost, output2: g);
+            var f = Op.Function(input: x, output: (cost, g));
             AssertSourceContains("Sigmoid", exactly: 1);
         }
 
@@ -87,7 +87,7 @@ namespace Proxem.TheaNet.Test
 
             var dW = Op.Grad(cost, W);
 
-            var update = new OrderedDictionary{ [W] = W - 0.05f * dW };
+            var update = new OrderedDictionary { [W] = W - 0.05f * dW };
 
             var f = Op.Function(input: x, output: cost, updates: update);
             AssertSourceContains("Dot", exactly: 2);
@@ -102,7 +102,7 @@ namespace Proxem.TheaNet.Test
             var cost = 0.5f * Op.Norm2(y);
             var dxs = Op.Grad(cost, xs);
 
-            var f = Op.Function(input: xs, output1: cost, output2: dxs);
+            var f = Op.Function(input: xs, output: (cost, dxs));
             AssertSourceContains("Sigmoid", exactly: 1);
         }
 
@@ -116,7 +116,7 @@ namespace Proxem.TheaNet.Test
             // here the gradient comes from a recursive variable
             var dxs = Op.Grad(cost, xs);
 
-            var f = Op.Function(input: xs, output1: cost, output2: dxs);
+            var f = Op.Function(input: xs, output: (cost, dxs));
             AssertSourceContains("Sigmoid", exactly: 1);
         }
 
@@ -130,7 +130,7 @@ namespace Proxem.TheaNet.Test
             // here the gradient comes from a non recursive variable
             var dxs = Op.Grad(cost, xs);
 
-            var f = Op.Function(input: xs, output1: cost, output2: dxs);
+            var f = Op.Function(input: xs, output: (cost, dxs));
             AssertSourceContains("Sigmoid", exactly: 1);
         }
 
@@ -211,7 +211,7 @@ namespace Proxem.TheaNet.Test
         {
             var source = FunctionBinder.Compiler.GetSource();
             var found = CountOccurences(source, substring);
-            if(found != exactly)
+            if (found != exactly)
                 throw new Exception($"Found '{substring}' {found} times in generated source code, but expected exactly {exactly} times.");
         }
 
@@ -219,11 +219,11 @@ namespace Proxem.TheaNet.Test
         {
             var i = 0;
             var found = -1;
-            while(i >= 0)
+            while (i >= 0)
             {
                 found += 1;
                 i = source.IndexOf(substring, i);
-                if(i >= 0) i += substring.Length;
+                if (i >= 0) i += substring.Length;
             }
 
             return found;

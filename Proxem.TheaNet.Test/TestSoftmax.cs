@@ -72,7 +72,7 @@ namespace Proxem.TheaNet.Test
             b[Range(0, 5), Range(0, 5)] = NN.Eye<float>(5);
 
             // show equivalence of softmax and exponentiated numerically stable log-softmax
-            var f1 = T.Function(input: x, output1: sm, output2: sm2);
+            var f1 = T.Function(input: x, output: (sm, sm2));
             var sm_ = f1(a);
             var sm_1 = sm_.Item1;       // classical softmax
             var sm_2 = sm_.Item2;       // log(sum(exp)) softmax
@@ -80,7 +80,7 @@ namespace Proxem.TheaNet.Test
 
             // now show that the two versions result in the same crossentropy cost
             // this indicates that the forward function does provide some numerical stability
-            var f2 = T.Function(input1: x, input2: y, output1: cm1, output2: cm2);
+            var f2 = T.Function(input: (x, y), output: (cm1, cm2));
             var c_ = f2(a, b);
             var c_1 = c_.Item1;
             var c_2 = c_.Item2;
@@ -88,7 +88,7 @@ namespace Proxem.TheaNet.Test
 
             // now, show that in the standard softmax case the gradients blow up 
             // while in the log-softmax case they don't
-            var f3 = T.Function(input1: x, input2: y, output1: g1, output2: g2);
+            var f3 = T.Function(input: (x, y), output: (g1, g2));
             var g_ = f3(a, b);
             var g_1 = g_.Item1;
             var g_2 = g_.Item2;

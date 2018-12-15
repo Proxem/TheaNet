@@ -81,7 +81,7 @@ namespace Proxem.TheaNet.Samples
                 updates[W] = W - lr * gradients[W];
 
             // theano functions
-            this.train = T.Function(input1: bits, input2: expected, input3: lr,
+            this.train = T.Function(input: (bits, expected, lr),
                               output: error,
                               updates: updates);
 
@@ -97,7 +97,7 @@ namespace Proxem.TheaNet.Samples
             foreach (var W in @params)
                 updates2[W] = W - 0.001f * gradients[W];
 
-            this.train2 = T.Function(input1: bit1, input2: bit2, input3: expected, output: e, updates: updates2);
+            this.train2 = T.Function(input: (bit1, bit2, expected), output: e, updates: updates2);
         }
     }
 }

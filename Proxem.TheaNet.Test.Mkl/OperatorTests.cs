@@ -99,7 +99,7 @@ namespace Proxem.TheaNet.Test.Mkl
         {
             var x = Op.Scalar<float>("x");
             var y = Op.Scalar<float>("y");
-            var f = Op.Function(input1: x, input2: y, output: Op.Max(x, y));
+            var f = Op.Function(input: (x, y), output: Op.Max(x, y));
             Assert.AreEqual(f(3, 4), 4);
             Assert.AreEqual(f(3, -4), 3);
             Assert.AreNotEqual(f(3, 4), 3);
@@ -111,7 +111,7 @@ namespace Proxem.TheaNet.Test.Mkl
         {
             var x = Op.Scalar<float>("x");
             var y = Op.Scalar<float>("y");
-            var f = Op.Function(input1: x, input2: y, output: x + y);
+            var f = Op.Function(input: (x, y), output: x + y);
             Assert.AreEqual(f(3, 4), 7);
             Assert.AreEqual(f(3, -4), -1);
             Assert.AreNotEqual(f(3, 4), 3);
@@ -131,7 +131,7 @@ namespace Proxem.TheaNet.Test.Mkl
         {
             var x = Op.Matrix<float>("x");
             var y = Op.Matrix<float>("y");
-            var f = Op.Function(input1: x, input2: y, output: x + y);
+            var f = Op.Function(input: (x, y), output: x + y);
             AssertArray.AreEqual(f(NN.Const(3f, 2, 2), NN.Const(4f, 2, 2)), NN.Const(7f, 2, 2));
             AssertArray.AreEqual(f(NN.Const(3f, 2, 2), NN.Const(-4f, 2, 2)), NN.Const(-1f, 2, 2));
             AssertArray.AreNotEqual(f(NN.Const(3f, 2, 2), NN.Const(4f, 2, 2)), NN.Const(3f, 2, 2));
@@ -143,7 +143,7 @@ namespace Proxem.TheaNet.Test.Mkl
         {
             var x = Op.Scalar<float>("x");
             var y = Op.Scalar<float>("y");
-            var f = Op.Function(input1: x, input2: y, output: 3 * (x + y));
+            var f = Op.Function(input: (x, y), output: 3 * (x + y));
             Assert.AreEqual(f(3, 4), 21);
             Assert.AreEqual(f(3, -4), -3);
             Assert.AreNotEqual(f(3, 4), 7);
@@ -155,7 +155,7 @@ namespace Proxem.TheaNet.Test.Mkl
         {
             var a = Op.Matrix<float>("a");
             var b = Op.Matrix<float>("b");
-            var f = Op.Function(input1: a, input2: b, output: 3 * (a + b));
+            var f = Op.Function(input: (a, b), output: 3 * (a + b));
             AssertArray.AreEqual(f(NN.Const(3f, 2, 2), NN.Const(4f, 2, 2)), NN.Const(21f, 2, 2));
             AssertArray.AreEqual(f(NN.Const(3f, 2, 2), NN.Const(-4f, 2, 2)), NN.Const(-3f, 2, 2));
             AssertArray.AreNotEqual(f(NN.Const(3f, 2, 2), NN.Const(4f, 2, 2)), NN.Const(7f, 2, 2));
@@ -191,7 +191,7 @@ namespace Proxem.TheaNet.Test.Mkl
         {
             var x = Op.Matrix<float>("x");
             var y = Op.Matrix<float>("y");
-            var f = Op.Function(input1: x, input2: y, output: Op.Scan((v1, v2) => v1 + v2, sequences: new[] { x, y }));
+            var f = Op.Function(input: (x, y), output: Op.Scan((v1, v2) => v1 + v2, sequences: new[] { x, y }));
 
             var input1 = NN.Eye<float>(2);
             var input2 = 2 * NN.Eye<float>(2);
@@ -222,7 +222,7 @@ namespace Proxem.TheaNet.Test.Mkl
             var cost = Op.Norm2(y);
             var g = Op.Grad(cost, x);
 
-            var f = Op.Function(input: x, output1: cost, output2: g);
+            var f = Op.Function(input: x, output: (cost, g));
         }
     }
 }

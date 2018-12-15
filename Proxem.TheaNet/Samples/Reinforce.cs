@@ -82,7 +82,7 @@ namespace Proxem.TheaNet.Samples
                 return (int)train_(sample.Item1, sample.Item2, sample.Item3, lr_);
             };
 
-            Mul = Op.Function(a, b, Op.Argmax(x));
+            Mul = Op.Function(input: (a, b), output: Op.Argmax(x));
         }
 
         public Tuple<int, int, int> NextSample()

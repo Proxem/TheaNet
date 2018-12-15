@@ -281,7 +281,7 @@ namespace Proxem.TheaNet.Test
             var cost = T.Sum(prod);
             var db = T.Grad(cost, b);
 
-            var costFunction = T.Function(xs, z, output: cost);
+            var costFunction = T.Function(input: (xs, z), output: cost);
             var xs_ = NN.Array(new float[,] {
                 { 1, -1 },
                 { 0, -2 }
@@ -293,7 +293,7 @@ namespace Proxem.TheaNet.Test
             Assert.AreEqual(4, cost_xs_z);
 
             var updates = new OrderedDictionary { { b, b - 0.05f * db } };
-            var train = T.Function(xs, z, output: cost, updates: updates);
+            var train = T.Function(input: (xs, z), output: cost, updates: updates);
             var cost_xs_z2 = train(xs_, z_);
             AssertArray.AreAlmostEqual(NN.Array(new[] { 0.95f, 0.95f }), b.Value);
         }

@@ -85,16 +85,16 @@ namespace Proxem.TheaNet.Test
             var e = T.Tanh(x / 5) * T.Exp(0.5f * y);
             var de_dx = T.Grad(e, x);
 
-            var f = T.Function(x, y, e);
+            var f = T.Function(input: (x, y), output: e);
             Assert.AreEqual((float)Math.Tanh(4f / 5f) * (float)Math.Exp(0.5f * 3f), f(4, 3));
             Assert.AreEqual((float)Math.Tanh(5f / 5f) * (float)Math.Exp(0.5f * 4f), f(5, 4));
 
-            var df_dx = T.Function(x, y, de_dx);
+            var df_dx = T.Function(input: (x, y), output: de_dx);
             Func<float, float> dtanh = z => 1 - (float)Math.Tanh(z) * (float)Math.Tanh(z);
             AssertArray.AreAlmostEqual(dtanh(4f / 5f) / 5f * (float)Math.Exp(0.5f * 3f), df_dx(4f, 3f));
             AssertArray.AreAlmostEqual(dtanh(5f / 5f) / 5f * (float)Math.Exp(0.5f * 4f), df_dx(5f, 4f));
 
-            var df_dy = T.Function(x, y, T.Grad(e, y));
+            var df_dy = T.Function(input: (x, y), output: T.Grad(e, y));
             AssertArray.AreAlmostEqual((float)Math.Tanh(4f / 5f) * 0.5f * (float)Math.Exp(0.5f * 3f), df_dy(4f, 3f));
             AssertArray.AreAlmostEqual((float)Math.Tanh(5f / 5f) * 0.5f * (float)Math.Exp(0.5f * 4f), df_dy(5f, 4f));
         }
@@ -174,7 +174,7 @@ namespace Proxem.TheaNet.Test
             var y_pred = T.Sum(T.Argmax(p_y_given_x, axis: 0));
 
             var nll = -T.Log(T.Sum(p_y_given_x[y]));
-            var loss = T.Function(input1: x, input2: y, output: nll);
+            var loss = T.Function(input: (x, y), output: nll);
         }
 
         [TestMethod]
@@ -309,7 +309,7 @@ namespace Proxem.TheaNet.Test
             var X_ = NN.Zeros(4, 2);
             var a_ = NN.Array<float>(1, -1);
 
-            var B_ = Op.Function(input1: M, input2: X, input3: a, output: B);
+            var B_ = Op.Function(input: (M, X, a), output: B);
             var B_pred = B_(M_, X_, a_);
 
             var Y_ = X_.Copy();
@@ -337,7 +337,7 @@ namespace Proxem.TheaNet.Test
             });
             var X_ = NN.Ones(2).Reshape(-1, 1);
 
-            var dL = T.Function(input1: X, input2: M, output: T.Grad(loss, X));
+            var dL = T.Function(input: (X, M), output: T.Grad(loss, X));
             var dX = NN.Array(new float[,] { { 1 }, { 2 } });
             AssertArray.AreAlmostEqual(dX, dL(X_, M_));
         }
@@ -355,7 +355,7 @@ namespace Proxem.TheaNet.Test
 
             var X_ = NN.Random.Uniform(-1f, 1f, 3, 2);
 
-            var dLdV = T.Function(input: X, output1: loss, output2: T.Grad(loss, V));
+            var dLdV = T.Function(input: X, output: (loss, T.Grad(loss, V)));
             dLdV(X_);
         }
 

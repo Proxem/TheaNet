@@ -198,11 +198,11 @@ namespace Proxem.TheaNet.Samples
             // theano functions
             this.Classify = T.Function(input: x, output: output);
 
-            this.Train = T.Function(input1: x, input2: expected,
+            this.Train = T.Function(input: (x, expected),
                               output: error,
                               updates: updatesTrain);
 
-            this.Update = T.Function(input1: lr, input2: batchSize, updates: updates);
+            this.Update = T.Function(input: (lr, batchSize), updates: updates);
         }
 
         //public void Update(float lr, int batchSize)
