@@ -25,7 +25,31 @@ Symbols are also available to facilitate debugging inside the package.
 
 ## Debugging with TheaNet
 
-![Define a scalar variable names "x"](https://github.com/Proxem/TheaNet/blob/master/images/debug1.png)
+This section illustrates how you can create a function, compute its gradient and step into the generated code
+
+Define a scalar variable named "x"
+![debug1.png](https://github.com/Proxem/TheaNet/blob/master/images/debug1.png)
+
+Define a function "Sqr"
+![debug2.png](https://github.com/Proxem/TheaNet/blob/master/images/debug2.png)
+
+Inspect "Sqr" by hovering the cursor over the variable
+![debug3.png](https://github.com/Proxem/TheaNet/blob/master/images/debug3.png)
+
+Define a function "g" as the gradient of "Sqr" with respect to "x"
+![debug4.png](https://github.com/Proxem/TheaNet/blob/master/images/debug4.png)
+
+Inspect "g" by hovering the cursor over the variable
+![debug5.png](https://github.com/Proxem/TheaNet/blob/master/images/debug5.png)
+
+Build a lambda expression "f" by compiling "g"
+![debug6.png](https://github.com/Proxem/TheaNet/blob/master/images/debug6.png)
+
+Press "F11" and step into the compile function
+![debug7.png](https://github.com/Proxem/TheaNet/blob/master/images/debug7.png)
+
+Return to the caller and check the result
+![debug8.png](https://github.com/Proxem/TheaNet/blob/master/images/debug8.png)
 
 ## Contact
 
