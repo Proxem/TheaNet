@@ -27,16 +27,23 @@ Symbols are also available to facilitate debugging inside the package.
 
 This section illustrates how you can create a function, compute its gradient and step into the generated code
 
+Use the following usings:
+```C#
+using Proxem.NumNet;
+using Proxem.NumNet.Single;
+using static Proxem.TheaNet.Op;
+```
+
 Define a scalar variable named "x"
 ![debug1.png](https://github.com/Proxem/TheaNet/blob/master/images/debug1.png)
 
-Define a function "Sqr"
+Define a symbolic function "Sqr"
 ![debug2.png](https://github.com/Proxem/TheaNet/blob/master/images/debug2.png)
 
-Inspect "Sqr" by hovering the cursor over the variable
+Inspect "Sqr" by hovering the cursor over the variable.
 ![debug3.png](https://github.com/Proxem/TheaNet/blob/master/images/debug3.png)
 
-Define a function "g" as the gradient of "Sqr" with respect to "x"
+Define a new symbolic function "g" as the gradient of "Sqr" with respect to "x"
 ![debug4.png](https://github.com/Proxem/TheaNet/blob/master/images/debug4.png)
 
 Inspect "g" by hovering the cursor over the variable
@@ -46,10 +53,10 @@ Build a lambda expression "f" by compiling "g"
 ![debug6.png](https://github.com/Proxem/TheaNet/blob/master/images/debug6.png)
 
 Press "F11" and step into the compiled function
-![debug7.png](https://github.com/Proxem/TheaNet/blob/master/images/debug8.png)
+![debug8.png](https://github.com/Proxem/TheaNet/blob/master/images/debug8.png)
 
 Return to the caller and check the result
-![debug8.png](https://github.com/Proxem/TheaNet/blob/master/images/debug9.png)
+![debug9.png](https://github.com/Proxem/TheaNet/blob/master/images/debug9.png)
 
 ## Contact
 
