@@ -27,10 +27,8 @@ Symbols are also available to facilitate debugging inside the package.
 
 This section illustrates how you can create a function, compute its gradient and step into the generated code
 
-Use the following usings:
+Use the following using:
 ```C#
-using Proxem.NumNet;
-using Proxem.NumNet.Single;
 using static Proxem.TheaNet.Op;
 ```
 
