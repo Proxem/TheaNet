@@ -17,14 +17,14 @@
  * limitations under the License.
  */
 
+using Microsoft.CSharp;
 using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
-using Microsoft.CSharp;
 
 namespace Proxem.TheaNet.Binding
 {
@@ -428,6 +428,113 @@ namespace Proxem.TheaNet.Binding
         {
             var source = GetSource();
 
+            //var assembly = CompileWithCodeDom<FType>(source);
+            var assembly = CompileWithRoslyn<FType>(source);
+
+            var constructor = assembly.GetType("DynClass").GetConstructor(new Type[0]);
+            var instance = (Runtime)constructor.Invoke(null);
+
+            foreach (var function in CustomFunctions)
+                instance.CustomFunctions.Add(function);
+
+            var method = assembly.GetType("DynClass").GetMethod(name);
+
+            var result = Delegate.CreateDelegate(typeof(FType), instance, method) as FType;
+            if (result == null)
+                throw new Exception("Can't convert compiled method to type " + typeof(FType).ToString());
+
+            return result;
+        }
+
+        private Assembly CompileWithRoslyn<FType>(string source) where FType : class
+        {
+            var (sourceText, path) = GetSourceText(source, Debug);
+            var syntaxTree = Microsoft.CodeAnalysis.CSharp.CSharpSyntaxTree.ParseText(sourceText, null, path);
+
+            string assemblyName = Path.GetRandomFileName();
+
+            var coreLib = CoreAssembly.Location;
+            var references = new List<Microsoft.CodeAnalysis.MetadataReference>
+            {
+                Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(coreLib),
+                // "Proxem.NumNet.dll" full path
+                Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(typeof(Proxem.NumNet.Random).Assembly.Location),
+                // "Proxem.TheaNet.dll" full path
+                Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(this.GetType().Assembly.Location)
+            };
+            if (IsDotnetCore)
+            {
+                var coreDir = Path.GetDirectoryName(coreLib);
+                references.Add(Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(Path.Combine(coreDir, "System.Runtime.dll")));
+                references.Add(Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(Path.Combine(coreDir, "System.Console.dll")));
+            }
+            else
+            {
+                // "netstandard.dll" full path (NumNet uses netstandard 2.0)
+                // Assumes that netstandard.dll is in same folder than current assembly.
+                references.Add(Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(
+                Path.Combine(Path.GetDirectoryName(this.GetType().Assembly.Location), "netstandard.dll")));
+            }
+
+            var options = new Microsoft.CodeAnalysis.CSharp.CSharpCompilationOptions(
+                Microsoft.CodeAnalysis.OutputKind.DynamicallyLinkedLibrary,
+                optimizationLevel: Debug ? Microsoft.CodeAnalysis.OptimizationLevel.Debug : Microsoft.CodeAnalysis.OptimizationLevel.Release);
+
+            var compilation = Microsoft.CodeAnalysis.CSharp.CSharpCompilation.Create(
+                assemblyName,
+                syntaxTrees: new[] { syntaxTree },
+                references: references,
+                options: options);
+
+            using (var peStream = new MemoryStream())
+            using (MemoryStream pdbStream = Debug ? new MemoryStream() : null)
+            {
+                var result = compilation.Emit(peStream, pdbStream);
+
+                if (!result.Success)
+                {
+                    var failures = result.Diagnostics.Where(diagnostic =>
+                        diagnostic.IsWarningAsError ||
+                        diagnostic.Severity == Microsoft.CodeAnalysis.DiagnosticSeverity.Error);
+
+                    var sb = new StringBuilder();
+                    sb.AppendLine($"Failed to compile method {nameof(FType)}.");
+                    foreach (Microsoft.CodeAnalysis.Diagnostic diagnostic in failures)
+                    {
+                        sb.Append("CompilerError: ");
+                        sb.AppendLine($"{diagnostic.Id}: {diagnostic.GetMessage()}");
+                    }
+                    sb.AppendLine("Source code:");
+                    sb.AppendLine(source);
+                    throw new Exception(sb.ToString());
+                }
+                return Assembly.Load(peStream.ToArray(), pdbStream?.ToArray());
+            }
+        }
+
+        public static (Microsoft.CodeAnalysis.Text.SourceText, string) GetSourceText(string src, bool isDebug)
+        {
+            if (isDebug)
+            {
+                var path = Path.ChangeExtension(Path.GetTempFileName(), "cs");
+                File.WriteAllText(path, src);
+                using (var stream = File.OpenRead(path))
+                {
+                    return (Microsoft.CodeAnalysis.Text.SourceText.From(stream, Encoding.UTF8), path);
+                }
+            }
+            else
+            {
+                return (Microsoft.CodeAnalysis.Text.SourceText.From(src), "");
+            }
+        }
+
+        public static Assembly CoreAssembly = typeof(object).GetType().Assembly;
+        public static bool IsDotnetCore = CoreAssembly.GetName().Name == "System.Private.CoreLib";
+
+
+        private Assembly CompileWithCodeDom<FType>(string source) where FType : class
+        {
             var references = new[] {
                 // "Proxem.NumNet.dll" full path
                 typeof(Proxem.NumNet.Random).Assembly.Location,
@@ -439,17 +546,17 @@ namespace Proxem.TheaNet.Binding
             };
 
             var provider = new CSharpCodeProvider();
-            var cp = new CompilerParameters();
+            var cp = new System.CodeDom.Compiler.CompilerParameters();
             cp.GenerateExecutable = false;
             foreach (var reference in references)
                 cp.ReferencedAssemblies.Add(reference);
 
-            CompilerResults cr;
+            System.CodeDom.Compiler.CompilerResults cr;
             if (Compiler.Debug)
             {
                 cp.IncludeDebugInformation = true;
                 cp.GenerateInMemory = false;
-                cp.TempFiles = new TempFileCollection(Environment.GetEnvironmentVariable("TEMP"), true);
+                cp.TempFiles = new System.CodeDom.Compiler.TempFileCollection(Environment.GetEnvironmentVariable("TEMP"), true);
                 var path = Path.ChangeExtension(Path.GetTempFileName(), "cs");
                 //var path = "temp.cs";
                 File.WriteAllText(path, source);    // for debugging purposes
@@ -466,7 +573,7 @@ namespace Proxem.TheaNet.Binding
             {
                 var sb = new StringBuilder();
                 sb.AppendLine($"Failed to compile method {nameof(FType)}.");
-                foreach (var error in cr.Errors.Cast<CompilerError>())
+                foreach (var error in cr.Errors.Cast<System.CodeDom.Compiler.CompilerError>())
                 {
                     sb.Append("CompilerError: ");
                     sb.AppendLine(error.ToString());
@@ -476,19 +583,7 @@ namespace Proxem.TheaNet.Binding
                 throw new Exception(sb.ToString());
             }
 
-            var constructor = cr.CompiledAssembly.GetType("DynClass").GetConstructor(new Type[0]);
-            var instance = (Runtime)constructor.Invoke(null);
-
-            foreach (var function in CustomFunctions)
-                instance.CustomFunctions.Add(function);
-
-            var method = cr.CompiledAssembly.GetType("DynClass").GetMethod(name);
-
-            var result = Delegate.CreateDelegate(typeof(FType), instance, method) as FType;
-            if (result == null)
-                throw new Exception("Can't convert compiled method to type " + typeof(FType).ToString());
-
-            return result;
+            return cr.CompiledAssembly;
         }
 
         public void Assert(string v)
