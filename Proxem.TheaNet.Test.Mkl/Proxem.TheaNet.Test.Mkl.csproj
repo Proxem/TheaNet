@@ -88,7 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Proxem.TheaNet\Proxem.TheaNet.csproj">
-      <Project>{6c9d1145-fdf4-4271-b431-5c5260af9c53}</Project>
+      <Project>{e59a5dd9-a78d-4739-83ad-4eb9c2bf2e6c}</Project>
       <Name>Proxem.TheaNet</Name>
     </ProjectReference>
   </ItemGroup>

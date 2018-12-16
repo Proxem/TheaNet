@@ -533,6 +533,7 @@ namespace Proxem.TheaNet.Binding
         public static bool IsDotnetCore = CoreAssembly.GetName().Name == "System.Private.CoreLib";
 
 
+#if !NETSTANDARD
         private Assembly CompileWithCodeDom<FType>(string source) where FType : class
         {
             var references = new[] {
@@ -585,6 +586,7 @@ namespace Proxem.TheaNet.Binding
 
             return cr.CompiledAssembly;
         }
+#endif
 
         public void Assert(string v)
         {
