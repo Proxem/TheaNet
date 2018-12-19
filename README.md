@@ -56,7 +56,11 @@ Press "F11" and step into the compiled function
 Return to the caller and check the result
 ![debug9.png](https://github.com/Proxem/TheaNet/blob/master/images/debug9.png)
 
-## Contact
+## Disclaimer
+
+This is not an official Proxem product.
+
+## Contact information
 
 If you can't make **TheaNet** work on your computer or if you have any tracks of improvement drop us an e-mail at one of the following address:
 - thp@proxem.com
