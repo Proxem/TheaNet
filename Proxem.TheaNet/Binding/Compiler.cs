@@ -453,29 +453,6 @@ namespace Proxem.TheaNet.Binding
 
             string assemblyName = Path.GetRandomFileName();
 
-            var coreLib = CoreAssembly.Location;
-            var references = new List<Microsoft.CodeAnalysis.MetadataReference>
-            {
-                Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(coreLib),
-                // "Proxem.NumNet.dll" full path
-                Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(typeof(Proxem.NumNet.Random).Assembly.Location),
-                // "Proxem.TheaNet.dll" full path
-                Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(this.GetType().Assembly.Location)
-            };
-            if (IsDotnetCore)
-            {
-                var coreDir = Path.GetDirectoryName(coreLib);
-                references.Add(Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(Path.Combine(coreDir, "System.Runtime.dll")));
-                references.Add(Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(Path.Combine(coreDir, "System.Console.dll")));
-            }
-            else
-            {
-                // "netstandard.dll" full path (NumNet uses netstandard 2.0)
-                // Assumes that netstandard.dll is in same folder than current assembly.
-                references.Add(Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(
-                Path.Combine(Path.GetDirectoryName(this.GetType().Assembly.Location), "netstandard.dll")));
-            }
-
             var options = new Microsoft.CodeAnalysis.CSharp.CSharpCompilationOptions(
                 Microsoft.CodeAnalysis.OutputKind.DynamicallyLinkedLibrary,
                 optimizationLevel: Debug ? Microsoft.CodeAnalysis.OptimizationLevel.Debug : Microsoft.CodeAnalysis.OptimizationLevel.Release);
@@ -483,7 +460,7 @@ namespace Proxem.TheaNet.Binding
             var compilation = Microsoft.CodeAnalysis.CSharp.CSharpCompilation.Create(
                 assemblyName,
                 syntaxTrees: new[] { syntaxTree },
-                references: references,
+                references: Compiler.References,
                 options: options);
 
             using (var peStream = new MemoryStream())
@@ -512,6 +489,56 @@ namespace Proxem.TheaNet.Binding
             }
         }
 
+        private static IEnumerable<string> GetTrustedPlatformAssemblies()
+        {
+            // see http://source.roslyn.io/#Microsoft.CodeAnalysis.Scripting/Hosting/Resolvers/RuntimeMetadataReferenceResolver.cs,180
+            var type = Type.GetType("System.AppContext, System.AppContext, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a");
+            var getData = (Func<string, object>)Delegate.CreateDelegate(typeof(Func<string, object>), type.GetTypeInfo().GetDeclaredMethod("GetData"));
+
+            if (getData.Invoke("TRUSTED_PLATFORM_ASSEMBLIES") is string paths)
+            {
+                foreach (var path in paths.Split(Path.PathSeparator))
+                {
+                    if (Path.GetExtension(path) == ".dll")
+                    {
+                        yield return path;
+                    }
+                }
+            }
+        }
+
+        private static List<Microsoft.CodeAnalysis.MetadataReference> GetReferences()
+        {
+            var coreLib = CoreAssembly.Location;
+            var references = new List<Microsoft.CodeAnalysis.MetadataReference>
+            {
+                Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(coreLib),
+                // "Proxem.NumNet.dll" full path
+                Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(typeof(Proxem.NumNet.Random).Assembly.Location),
+                // "Proxem.TheaNet.dll" full path
+                Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(typeof(Compiler).Assembly.Location)
+            };
+            if (IsDotnetCore)
+            {
+                var coreDir = Path.GetDirectoryName(coreLib);
+                references.Add(Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(Path.Combine(coreDir, "System.Runtime.dll")));
+                references.Add(Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(Path.Combine(coreDir, "System.Console.dll")));
+                foreach (var assembly in GetTrustedPlatformAssemblies().Where(assembly => Path.GetFileName(assembly) == "netstandard.dll"))
+                {
+                    references.Add(Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(assembly));
+                }
+            }
+            else
+            {
+                // "netstandard.dll" full path (NumNet uses netstandard 2.0)
+                // Assumes that netstandard.dll is in same folder than current assembly.
+                references.Add(Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(
+                Path.Combine(Path.GetDirectoryName(typeof(Compiler).Assembly.Location), "netstandard.dll")));
+            }
+
+            return references;
+        }
+
         public static (Microsoft.CodeAnalysis.Text.SourceText, string) GetSourceText(string src, bool isDebug)
         {
             if (isDebug)
@@ -531,7 +558,7 @@ namespace Proxem.TheaNet.Binding
 
         public static Assembly CoreAssembly = typeof(object).GetType().Assembly;
         public static bool IsDotnetCore = CoreAssembly.GetName().Name == "System.Private.CoreLib";
-
+        public static List<Microsoft.CodeAnalysis.MetadataReference> References = GetReferences();
 
 #if !NETSTANDARD
         private Assembly CompileWithCodeDom<FType>(string source) where FType : class
