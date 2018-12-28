@@ -7,8 +7,8 @@
     <ProjectGuid>{6C9D1145-FDF4-4271-B431-5C5260AF9C53}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Proxem.Theanet</RootNamespace>
-    <AssemblyName>Proxem.Theanet</AssemblyName>
+    <RootNamespace>Proxem.TheaNet</RootNamespace>
+    <AssemblyName>Proxem.TheaNet</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

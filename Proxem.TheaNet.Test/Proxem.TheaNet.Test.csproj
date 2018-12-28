@@ -6,8 +6,8 @@
     <ProjectGuid>{B121B804-18CF-4362-8253-B04F16162106}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Proxem.Theanet.Test</RootNamespace>
-    <AssemblyName>Proxem.Theanet.Test</AssemblyName>
+    <RootNamespace>Proxem.TheaNet.Test</RootNamespace>
+    <AssemblyName>Proxem.TheaNet.Test</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
