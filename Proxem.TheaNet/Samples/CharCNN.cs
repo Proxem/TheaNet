@@ -89,7 +89,7 @@ namespace Proxem.TheaNet.Samples
             foreach (var W in @params)
                 updates[W] = W - lr * grad[W];
 
-            _train = T.Function(input1: chars, input2: gold, input3: lr, output: Loss, updates: updates);
+            _train = T.Function(input: (chars, gold, lr), output: Loss, updates: updates);
             train = (w, g, l) => _train(Convert(w), g, l);
         }
 

@@ -46,8 +46,8 @@ namespace Proxem.TheaNet.Test
             var rng = NN.Random.Seed(20130601);
             var o = T.Matrix<float>("o");
             var c = T.Tensor3<float>("c");
-            var f = T.Function(input1: o, input2: c, output: Crf.Forward(o, c));
-            var g = T.Function(input1: o, input2: c, output: Crf.Forward(o, c, viterbi: true));
+            var f = T.Function(input: (o, c), output: Crf.Forward(o, c));
+            var g = T.Function(input: (o, c), output: Crf.Forward(o, c, viterbi: true));
             for (int i = 0; i < 20; i++)
             {
                 var num_labels = rng.Next(2, 10);

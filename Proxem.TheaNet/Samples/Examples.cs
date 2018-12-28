@@ -56,7 +56,7 @@ namespace Proxem.TheaNet.Samples
             var diff = a - b;
             var abs_diff = T.Abs(diff);
             var diff_squared = diff * diff;
-            var f = T.Function(a, b, new[] { diff, abs_diff, diff_squared });
+            var f = T.Function((a, b), new[] { diff, abs_diff, diff_squared });
 
             var result = f(
                 NN.Array<float>(new float[,] { { 1, 1 }, { 1, 1 } }),

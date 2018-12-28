@@ -110,7 +110,7 @@ namespace Proxem.TheaNet.Samples
             // theano functions
             this.classify = T.Function(input: x, output: y_pred);
             this.debug = T.Function(input: x, output: debug);
-            this.train = T.Function(input1: x, input2: y, input3: lr,
+            this.train = T.Function(input: (x, y, lr),
                               output: nll,
                               updates: updates);
         }

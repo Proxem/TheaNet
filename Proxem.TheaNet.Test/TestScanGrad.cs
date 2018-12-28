@@ -94,7 +94,7 @@ namespace Proxem.TheaNet.Test
 
             var grad = T.Grad(norm2, W);
 
-            var df = T.Function(X, output1: norm2, output2: grad);
+            var df = T.Function(input: X, output: (norm2, grad));
             df(NN.Array(new[,] { { 0f, 0f, 0f, 0f, 0f } }));
 
             AssertTensor.PassesGradientCheck(X, norm2, acc0);

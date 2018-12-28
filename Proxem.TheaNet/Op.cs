@@ -116,7 +116,7 @@ namespace Proxem.TheaNet
 
             computed = computed ?? Grad(output, x);
             var backpropagated = Numeric<X>.Two * Sum(eps * computed);
-            return Function(inputSet, output1: finite, output2: backpropagated, givens: givens);
+            return Function(inputSet, output: (finite, backpropagated), givens: givens);
         }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace Proxem.TheaNet
             finite.Name = nameof(finite);
 
             computed = computed ?? Grad(output, x);
-            return Function(inputSet, output1: finite, output2: computed, givens: givens);
+            return Function(inputSet, output: (finite, computed), givens: givens);
         }
 
         /// <summary>
@@ -182,22 +182,43 @@ namespace Proxem.TheaNet
             return FunctionBinder.Function(input1: input, input2: epsilon, output1: finite, output2: backpropagated, givens: givens);
         }
 
+        [Obsolete]
         public static Func<T1, T2, T3> Function<T1, T2, T3>(IVar<T1> input1, IVar<T2> input2, IExpr<T3> output,
             OrderedDictionary/*<TensorExpr.Shared, TensorExpr>*/ updates = null, IDictionary givens = null, string name = null)
         {
             return FunctionBinder.Function(input1, input2, output, updates, givens, name: name);
         }
 
+        public static Func<T1, T2, T3> Function<T1, T2, T3>((IVar<T1> x1, IVar<T2> x2) input, IExpr<T3> output,
+            OrderedDictionary/*<TensorExpr.Shared, TensorExpr>*/ updates = null, IDictionary givens = null, string name = null)
+        {
+            return FunctionBinder.Function(input.x1, input.x2, output, updates, givens, name: name);
+        }
+
+        [Obsolete]
         public static Func<T1, T2, T3, T4> Function<T1, T2, T3, T4>(IVar<T1> input1, IVar<T2> input2, IVar<T3> input3, IExpr<T4> output,
             OrderedDictionary/*<TensorExpr.Shared, TensorExpr>*/ updates = null, IDictionary givens = null, string name = null)
         {
             return FunctionBinder.Function(input1, input2, input3, output, updates, givens, name: name);
         }
 
+        public static Func<T1, T2, T3, T4> Function<T1, T2, T3, T4>((IVar<T1> x1, IVar<T2> x2, IVar<T3> x3) input, IExpr<T4> output,
+            OrderedDictionary/*<TensorExpr.Shared, TensorExpr>*/ updates = null, IDictionary givens = null, string name = null)
+        {
+            return FunctionBinder.Function(input.x1, input.x2, input.x3, output, updates, givens, name: name);
+        }
+
+        [Obsolete]
         public static Func<T1, T2, T3, T4, T5> Function<T1, T2, T3, T4, T5>(IVar<T1> input1, IVar<T2> input2, IVar<T3> input3, IVar<T4> input4, IExpr<T5> output,
             OrderedDictionary/*<TensorExpr.Shared, TensorExpr>*/ updates = null, IDictionary givens = null, string name = null)
         {
             return FunctionBinder.Function(input1, input2, input3, input4, output, updates, givens, name: name);
+        }
+
+        public static Func<T1, T2, T3, T4, T5> Function<T1, T2, T3, T4, T5>((IVar<T1> x1, IVar<T2> x2, IVar<T3> x3, IVar<T4> x4) input, IExpr<T5> output,
+            OrderedDictionary/*<TensorExpr.Shared, TensorExpr>*/ updates = null, IDictionary givens = null, string name = null)
+        {
+            return FunctionBinder.Function(input.x1, input.x2, input.x3, input.x4, output, updates, givens, name: name);
         }
 
         public static Func<T1, IList<T2>> Function<T1, T2>(IVar<T1> input, IEnumerable<IExpr<T2>> outputs,
@@ -206,10 +227,17 @@ namespace Proxem.TheaNet
             return FunctionBinder.Function(input, outputs, updates, givens, name: name);
         }
 
+        [Obsolete]
         public static Func<T1, Tuple<T2, T3>> Function<T1, T2, T3>(IVar<T1> input, IExpr<T2> output1, IExpr<T3> output2,
             OrderedDictionary/*<TensorExpr.Shared, TensorExpr>*/ updates = null, IDictionary givens = null, string name = null)
         {
             return FunctionBinder.Function(input, output1, output2, updates, givens, name: name);
+        }
+
+        public static Func<T1, Tuple<T2, T3>> Function<T1, T2, T3>(IVar<T1> input, (IExpr<T2> x1, IExpr<T3> x2) output,
+            OrderedDictionary/*<TensorExpr.Shared, TensorExpr>*/ updates = null, IDictionary givens = null, string name = null)
+        {
+            return FunctionBinder.Function(input, output.x1, output.x2, updates, givens, name: name);
         }
 
         public static Func<IList<T1>, IList<T2>> Function<T1, T2>(IEnumerable<IVar<T1>> inputs, IEnumerable<IExpr<T2>> outputs,
@@ -218,10 +246,17 @@ namespace Proxem.TheaNet
             return FunctionBinder.Function(inputs, outputs, updates, givens, name: name);
         }
 
+        [Obsolete]
         public static Func<IList<T1>, Tuple<T2, T3>> Function<T1, T2, T3>(IEnumerable<IVar<T1>> inputs, IExpr<T2> output1, IExpr<T3> output2,
             OrderedDictionary/*<TensorExpr.Shared, TensorExpr>*/ updates = null, IDictionary givens = null, string name = null)
         {
             return FunctionBinder.Function(inputs, output1, output2, updates, givens, name: name);
+        }
+
+        public static Func<IList<T1>, Tuple<T2, T3>> Function<T1, T2, T3>(IEnumerable<IVar<T1>> inputs, (IExpr<T2> x1, IExpr<T3> x2) output,
+            OrderedDictionary/*<TensorExpr.Shared, TensorExpr>*/ updates = null, IDictionary givens = null, string name = null)
+        {
+            return FunctionBinder.Function(inputs, output.x1, output.x2, updates, givens, name: name);
         }
 
         public static Func<IList<T1>, T2> Function<T1, T2>(IEnumerable<IVar<T1>> inputs, IExpr<T2> output,
@@ -230,16 +265,30 @@ namespace Proxem.TheaNet
             return FunctionBinder.Function(inputs, output, updates, givens, name: name);
         }
 
+        [Obsolete]
         public static Func<T1, T2, IList<T3>> Function<T1, T2, T3>(IVar<T1> input1, IVar<T2> input2, IList<IExpr<T3>> outputs,
             OrderedDictionary/*<TensorExpr.Shared, TensorExpr>*/ updates = null, IDictionary givens = null, string name = null)
         {
             return FunctionBinder.Function(input1, input2, outputs, updates, givens, name: name);
         }
 
+        public static Func<T1, T2, IList<T3>> Function<T1, T2, T3>((IVar<T1> x1, IVar<T2> x2) input, IList<IExpr<T3>> outputs,
+            OrderedDictionary/*<TensorExpr.Shared, TensorExpr>*/ updates = null, IDictionary givens = null, string name = null)
+        {
+            return FunctionBinder.Function(input.x1, input.x2, outputs, updates, givens, name: name);
+        }
+
+        [Obsolete]
         public static Func<T1, T2, Tuple<T3, T4>> Function<T1, T2, T3, T4>(IVar<T1> input1, IVar<T2> input2, IExpr<T3> output1, IExpr<T4> output2,
             OrderedDictionary/*<TensorExpr.Shared, TensorExpr>*/ updates = null, IDictionary givens = null, string name = null)
         {
             return FunctionBinder.Function(input1, input2, output1, output2, updates, givens, name: name);
+        }
+
+        public static Func<T1, T2, Tuple<T3, T4>> Function<T1, T2, T3, T4>((IVar<T1> x1, IVar<T2> x2) input, (IExpr<T3> x1, IExpr<T4> x2) output,
+            OrderedDictionary/*<TensorExpr.Shared, TensorExpr>*/ updates = null, IDictionary givens = null, string name = null)
+        {
+            return FunctionBinder.Function(input.x1, input.x2, output.x1, output.x2, updates, givens, name: name);
         }
 
         public static Action Function(OrderedDictionary/*<TensorExpr.Shared, TensorExpr>*/ updates, IDictionary givens = null, string name = null)
@@ -253,22 +302,43 @@ namespace Proxem.TheaNet
             return FunctionBinder.Function(input, updates, givens, name: name);
         }
 
+        [Obsolete]
         public static Action<T1, T2> Function<T1, T2>(IVar<T1> input1, IVar<T2> input2,
             OrderedDictionary/*<TensorExpr.Shared, TensorExpr>*/ updates = null, IDictionary givens = null, string name = null)
         {
             return FunctionBinder.Function(input1, input2, updates, givens, name: name);
         }
 
+        public static Action<T1, T2> Function<T1, T2>((IVar<T1> x1, IVar<T2> x2) input,
+            OrderedDictionary/*<TensorExpr.Shared, TensorExpr>*/ updates = null, IDictionary givens = null, string name = null)
+        {
+            return FunctionBinder.Function(input.x1, input.x2, updates, givens, name: name);
+        }
+
+        [Obsolete]
         public static Action<T1, T2, T3> Function<T1, T2, T3>(IVar<T1> input1, IVar<T2> input2, IVar<T3> input3,
             OrderedDictionary/*<TensorExpr.Shared, TensorExpr>*/ updates = null, IDictionary givens = null, string name = null)
         {
             return FunctionBinder.Function(input1, input2, input3, updates, givens, name: name);
         }
 
+        public static Action<T1, T2, T3> Function<T1, T2, T3>((IVar<T1> x1, IVar<T2> x2, IVar<T3> x3) input,
+            OrderedDictionary/*<TensorExpr.Shared, TensorExpr>*/ updates = null, IDictionary givens = null, string name = null)
+        {
+            return FunctionBinder.Function(input.x1, input.x2, input.x3, updates, givens, name: name);
+        }
+
+        [Obsolete]
         public static Action<T1, T2, T3, T4> Function<T1, T2, T3, T4>(IVar<T1> input1, IVar<T2> input2, IVar<T3> input3, IVar<T4> input4,
             OrderedDictionary/*<TensorExpr.Shared, TensorExpr>*/ updates = null, IDictionary givens = null, string name = null)
         {
             return FunctionBinder.Function(input1, input2, input3, input4, updates, givens, name: name);
+        }
+
+        public static Action<T1, T2, T3, T4> Function<T1, T2, T3, T4>((IVar<T1> x1, IVar<T2> x2, IVar<T3> x3, IVar<T4> x4) input,
+            OrderedDictionary/*<TensorExpr.Shared, TensorExpr>*/ updates = null, IDictionary givens = null, string name = null)
+        {
+            return FunctionBinder.Function(input.x1, input.x2, input.x3, input.x4, updates, givens, name: name);
         }
 
         public static Action<IList<T1>> Function<T1>(IEnumerable<IVar<T1>> inputs,
@@ -280,8 +350,12 @@ namespace Proxem.TheaNet
         public static FunctionBinder.ParamsFunction<R> Function<R>(IEnumerable<IVar> inputs, IExpr<R> output, OrderedDictionary updates = null, IDictionary givens = null, string name = null)
             => FunctionBinder.Function_(inputs, output, updates, givens, name: name);
 
+        [Obsolete]
         public static FunctionBinder.ParamsFunction<R1, R2> Function<R1, R2>(IEnumerable<IVar> inputs, IExpr<R1> output1, IExpr<R2> output2, OrderedDictionary updates = null, IDictionary givens = null, string name = null)
             => FunctionBinder.Function_(inputs, output1, output2, updates, givens, name: name);
+
+        public static FunctionBinder.ParamsFunction<R1, R2> Function<R1, R2>(IEnumerable<IVar> inputs, (IExpr<R1> x1, IExpr<R2> x2) output, OrderedDictionary updates = null, IDictionary givens = null, string name = null)
+            => FunctionBinder.Function_(inputs, output.x1, output.x2, updates, givens, name: name);
 
         /// <summary>
         /// Compile a funtion with the given signature.

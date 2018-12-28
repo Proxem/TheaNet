@@ -2,8 +2,8 @@
 
 TheaNet is an optimized library for deep learning models written in C\# and developed at [Proxem](https://proxem.com).
 The library is inspired by python's [theano](http://deeplearning.net/software/theano/) library and offers similar possibilities.
-Automatic gradient differentiation allows to create complex model and run them with simple commands with all the backpropagation being taken care of by the library.
-TheaNet generates readable code in C\# with the possibility to step-in the generated code and debug it.  
+Automatic gradient differentiation allows to create complex models and run them with simple commands with all the backpropagation being taken care of by the library.
+TheaNet generates readable code in C\# with the possibility to step in the generated code and debug it.  
 
 ## Table of contents
 
@@ -14,8 +14,7 @@ TheaNet generates readable code in C\# with the possibility to step-in the gener
 
 ## Requirements
 
-TheaNet is currently developed in .Net Framework 4.7.2. Due to CodeDom, the library for code generation, that is not yet compatible with .Net Core we don't guarantee that TheaNet will work outside of Windows environment.
-We are currently working on finding a substitute to CodeDom that will work with .Net Core in order to make our library multi-platform.
+TheaNet is currently developed in .Net Framework 4.7.2. 
 
 TheaNet is integrated with our [NumNet](https://github.com/Proxem/NumNet) and [BlasNet](https://github.com/Proxem/BlasNet) libraries and require both libraries to work.  
 
@@ -24,7 +23,44 @@ TheaNet is integrated with our [NumNet](https://github.com/Proxem/NumNet) and [B
 We provide a Nuget Package of **TheaNet** to facilitate its use. It's available on [Nuget.org](https://www.nuget.org/packages/Proxem.TheaNet/). 
 Symbols are also available to facilitate debugging inside the package.
 
-## Contact
+## Debugging with TheaNet
+
+This section illustrates how you can create a function, compute its gradient and step into the generated code
+
+Start with the following using:
+```C#
+using static Proxem.TheaNet.Op;
+```
+
+Define a scalar variable named "x"
+![debug1.png](https://github.com/Proxem/TheaNet/blob/master/images/debug1.png)
+
+Define a symbolic function "Sqr"
+![debug2.png](https://github.com/Proxem/TheaNet/blob/master/images/debug2.png)
+
+Inspect "Sqr" by hovering the cursor over the variable.
+![debug3.png](https://github.com/Proxem/TheaNet/blob/master/images/debug3.png)
+
+Define a new symbolic function "g" as the gradient of "Sqr" with respect to "x"
+![debug4.png](https://github.com/Proxem/TheaNet/blob/master/images/debug4.png)
+
+Inspect "g" by hovering the cursor over the variable
+![debug5.png](https://github.com/Proxem/TheaNet/blob/master/images/debug5.png)
+
+Build a lambda expression "f" by compiling "g"
+![debug6.png](https://github.com/Proxem/TheaNet/blob/master/images/debug6.png)
+
+Press "F11" and step into the compiled function
+![debug8.png](https://github.com/Proxem/TheaNet/blob/master/images/debug8.png)
+
+Return to the caller and check the result
+![debug9.png](https://github.com/Proxem/TheaNet/blob/master/images/debug9.png)
+
+## Disclaimer
+
+This is not an official Proxem product.
+
+## Contact information
 
 If you can't make **TheaNet** work on your computer or if you have any tracks of improvement drop us an e-mail at one of the following address:
 - thp@proxem.com

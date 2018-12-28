@@ -97,7 +97,7 @@ namespace Proxem.TheaNet.Samples
 
             this.classify = T.Function(input: x, output: y_pred);
 
-            this.train = T.Function(input1: x, input2: y, input3: lr,
+            this.train = T.Function(input: (x, y, lr),
                               output: nll,
                               updates: updates);
         }
@@ -173,7 +173,7 @@ namespace Proxem.TheaNet.Samples
 
             this.classify = T.Function(input: x, output: y_pred);
 
-            this.train = T.Function(input1: x, input2: y, input3: lr,
+            this.train = T.Function(input: (x, y, lr),
                               output: nll,
                               updates: updates);
         }

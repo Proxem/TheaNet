@@ -433,7 +433,7 @@ namespace Proxem.TheaNet.Test
             var updates = new OrderedDictionary();
             foreach (var W in d.Keys)
                 updates[W] = W - 0.001f * d[W];
-            var train = T.Function(input1: bit1, input2: bit2, input3: expected, output: e, updates: updates);
+            var train = T.Function(input: (bit1, bit2, expected), output: e, updates: updates);
 
             var input1 = NN.Array<float>(xor[0].Item1[0]).Reshape(1, 1);
             var input2 = NN.Array<float>(xor[0].Item1[1]).Reshape(1, 1);
@@ -479,7 +479,7 @@ namespace Proxem.TheaNet.Test
             var updates = new OrderedDictionary();
             foreach (var W in d.Keys)
                 updates[W] = W - 0.001f * d[W];
-            var train = T.Function(input1: bit1, input2: bit2, input3: expected, output: e, updates: updates);
+            var train = T.Function(input: (bit1, bit2, expected), output: e, updates: updates);
 
             var input1 = NN.Array<float>(xor[0].Item1[0]).Reshape(1, 1);
             var input2 = NN.Array<float>(xor[0].Item1[1]).Reshape(1, 1);
@@ -533,7 +533,7 @@ namespace Proxem.TheaNet.Test
 
             // theano functions
             var train = T.Function(
-                input1: bits, input2: expected, input3: lr,
+                input: (bits, expected, lr),
                 output: error,
                 updates: updates
             );

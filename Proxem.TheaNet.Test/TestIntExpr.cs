@@ -36,7 +36,7 @@ namespace Proxem.TheaNet.Test
             var y = T.Scalar<int>("y");
             var e = x + y;
 
-            var f = T.Function(x, y, e);
+            var f = T.Function(input: (x, y), output: e);
             Assert.AreEqual(8, f(5, 3));
         }
 
@@ -57,7 +57,7 @@ namespace Proxem.TheaNet.Test
             var y = T.Scalar<float>("y");
             var e = 2 * x + 3 * y;
 
-            var f = T.Function(x, y, e);
+            var f = T.Function(input: (x, y), output: e);
             Assert.AreEqual(22, f(5, 4));
         }
 
