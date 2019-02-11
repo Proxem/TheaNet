@@ -4,7 +4,7 @@
     <id>Proxem.TheaNet</id>
     <version>1.6</version>
     <title>TheaNet</title>
-    <licenseUrl>https://github.com/Proxem/TheaNet/blob/master/LICENSE</licenseUrl>
+    <license type="expression">Apache-2.0</license>
     <iconUrl>https://github.com/Proxem/TheaNet/blob/master/logo/proxem.png?raw=true</iconUrl>
     <projectUrl>https://github.com/Proxem/TheaNet</projectUrl>
     <authors>Jocelyn Coulmance, Thomas Perrais, Guillaume Wenzek, Amine Benhalloum, Jean-Marc Marty</authors>
