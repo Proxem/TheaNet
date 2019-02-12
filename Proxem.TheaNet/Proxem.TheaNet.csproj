@@ -2,16 +2,56 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Configurations>Debug;Release</Configurations>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="2.10.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
-    <PackageReference Include="Proxem.NumNet" Version="1.5.2" />
+    <PackageReference Include="Proxem.NumNet" Version="1.6.0" />
     <PackageReference Include="System.Dynamic.Runtime" Version="4.3.0" />
     <PackageReference Include="System.Reflection" Version="4.3.0" />
   </ItemGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <OutputPath>..\build\debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <PlatformTarget>x64</PlatformTarget>
+        <NoWarn>1591;1573</NoWarn>
+        <DocumentationFile>..\doc\Proxem.TheaNet.XML</DocumentationFile>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|x64'">
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+      <OutputPath>..\build\debug\</OutputPath>
+      <DefineConstants>DEBUG;TRACE</DefineConstants>
+      <PlatformTarget>x64</PlatformTarget>
+      <NoWarn>1591;1573</NoWarn>
+      <DocumentationFile>..\doc\Proxem.TheaNet.XML</DocumentationFile>
+    </PropertyGroup>
+    
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <OutputPath>..\build\release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <PlatformTarget>x64</PlatformTarget>
+        <Optimize>true</Optimize>
+        <NoWarn>1591;1573</NoWarn>
+        <DocumentationFile>..\doc\Proxem.TheaNet.XML</DocumentationFile>
+    </PropertyGroup>
+    
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|x64'">
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+      <OutputPath>..\build\release\</OutputPath>
+      <DefineConstants>TRACE</DefineConstants>
+      <PlatformTarget>x64</PlatformTarget>
+      <Optimize>true</Optimize>
+      <NoWarn>1591;1573</NoWarn>
+      <DocumentationFile>..\doc\Proxem.TheaNet.XML</DocumentationFile>
+    </PropertyGroup>
+  
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>

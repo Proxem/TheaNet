@@ -452,7 +452,6 @@ namespace Proxem.TheaNet.Binding
             var syntaxTree = Microsoft.CodeAnalysis.CSharp.CSharpSyntaxTree.ParseText(sourceText, null, path);
 
             string assemblyName = Path.GetRandomFileName();
-
             var options = new Microsoft.CodeAnalysis.CSharp.CSharpCompilationOptions(
                 Microsoft.CodeAnalysis.OutputKind.DynamicallyLinkedLibrary,
                 optimizationLevel: Debug ? Microsoft.CodeAnalysis.OptimizationLevel.Debug : Microsoft.CodeAnalysis.OptimizationLevel.Release);

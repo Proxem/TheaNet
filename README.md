@@ -14,7 +14,7 @@ TheaNet generates readable code in C\# with the possibility to step in the gener
 
 ## Requirements
 
-TheaNet is currently developed in .Net Framework 4.7.2. 
+TheaNet is developed in .Net standard 2.0 and is compatible with both .Net Framework and .Net Core thus running on any platform. 
 
 TheaNet is integrated with our [NumNet](https://github.com/Proxem/NumNet) and [BlasNet](https://github.com/Proxem/BlasNet) libraries and require both libraries to work.  
 
