@@ -329,6 +329,8 @@ namespace Proxem.TheaNet
         //[DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public bool IsTwo => IsConst(Numeric<Type>.Two);
 
+        public override System.Type GetArgumentType() => typeof(Array<Type>);
+
         public abstract class Symbol : Tensor<Type>, ISymbol
         {
             public Symbol(Dim[] shape, string name): base("TSymbol")

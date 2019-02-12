@@ -77,6 +77,8 @@ namespace Proxem.TheaNet
         public IEnumerator<T> GetEnumerator() => ((IEnumerable<T>)Inputs).GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => Inputs.GetEnumerator();
+
+        public override Type GetArgumentType() => typeof(U[]);
     }
 
     public static class XListExtension

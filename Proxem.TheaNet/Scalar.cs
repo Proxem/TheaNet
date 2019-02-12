@@ -73,6 +73,8 @@ namespace Proxem.TheaNet
         /// <remarks>This implementation only works while there is no inputs</remarks>
         public override IExpr Patch(Patch substitutions) => PatternMatching.GetOrElse(substitutions.TryGetValue, this, this);
 
+        public override System.Type GetArgumentType() => typeof(Type);
+
         public class Const : Scalar<Type>, IConst
         {
             public readonly Type Value;

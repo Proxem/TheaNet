@@ -75,14 +75,14 @@ namespace Proxem.TheaNet.Binding
         /// If `arrayName` is not null the arguments must be extracted from an array.
         /// The difference is due to list.Count and array.Length
         /// </summary>
-        public void CompileArgs(IList<Tuple<IVar, Type>> args, string listName, string arrayName)
+        public void CompileArgs(IList<IVar> args, string listName, string arrayName)
         {
             if (listName == null && arrayName == null)
             {
                 foreach (var arg in args)
                 {
                     //CompileArg(arg.Item1);
-                    var var = arg.Item1;
+                    var var = arg;
                     Scope.Declare(var, this, var.Name);
                     CheckDim(var);
                 }
@@ -100,8 +100,8 @@ namespace Proxem.TheaNet.Binding
                 foreach (var arg in args)
                 {
                     //CompileArg(arg.Item1, $"({arg.Item2.GetName()}){name}[{i++}]");
-                    var var = arg.Item1;
-                    var expr = $"({arg.Item2.GetName()}){name}[{i++}]";
+                    var var = arg;
+                    var expr = $"({arg.GetArgumentType().GetName()}){name}[{i++}]";
                     Scope.Declare(var, this);
 
                     var comment = var.Comment;

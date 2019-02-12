@@ -192,6 +192,8 @@ namespace Proxem.TheaNet
             else
                 return this;
         }
+
+        public override Type GetArgumentType() => typeof(Slice);
     }
 
     /// <summary>

@@ -32,8 +32,8 @@ namespace Proxem.TheaNet.Binding
 
         public static Func<R> Function<R>(IExpr<R> output, OrderedDictionary updates = null, IDictionary givens = null, string name = "Function") =>
             Compile<Func<R>>(
-                EmptyArray<Tuple<IVar, Type>>.Value,
-                new[] { Tuple.Create((IExpr)output, typeof(R)) },
+                EmptyArray<IVar>.Value,
+                new[] { output },
                 updates,
                 givens,
                 name: name
@@ -45,8 +45,8 @@ namespace Proxem.TheaNet.Binding
             string name = null)
         {
             return Compile<Func<T, R>>(
-                new[] { Tuple.Create((IVar)input, typeof(T)) },
-                new[] { Tuple.Create((IExpr)output, typeof(R)) },
+                new[] { input },
+                new[] { output },
                 updates,
                 givens,
                 name: name
@@ -59,8 +59,8 @@ namespace Proxem.TheaNet.Binding
             string name = null)
         {
             return Compile<Func<T1, T2, R>>(
-                new[] { Tuple.Create((IVar)input1, typeof(T1)), Tuple.Create((IVar)input2, typeof(T2)) },
-                new[] { Tuple.Create((IExpr)output, typeof(R)) },
+                new IVar[] { input1, input2 },
+                new[] { output },
                 updates,
                 givens,
                 name : name
@@ -73,8 +73,8 @@ namespace Proxem.TheaNet.Binding
             string name = null
         ) =>
             Compile<Func<T1, T2, T3, R>>(
-                new[] { Tuple.Create((IVar)input1, typeof(T1)), Tuple.Create((IVar)input2, typeof(T2)), Tuple.Create((IVar)input3, typeof(T3)) },
-                new[] { Tuple.Create((IExpr)output, typeof(R)) },
+                new IVar[] { input1, input2, input3 },
+                new[] { output },
                 updates,
                 givens,
                 name : name
@@ -86,8 +86,8 @@ namespace Proxem.TheaNet.Binding
             string name = null
         ) =>
             Compile<Func<T1, T2, T3, T4, R>>(
-                new[] { Tuple.Create((IVar)input1, typeof(T1)), Tuple.Create((IVar)input2, typeof(T2)), Tuple.Create((IVar)input3, typeof(T3)), Tuple.Create((IVar)input4, typeof(T4)) },
-                new[] { Tuple.Create((IExpr)output, typeof(R)) },
+                new IVar[] { input1, input2, input3, input4 },
+                new[] { output },
                 updates,
                 givens,
                 name: name
@@ -101,8 +101,8 @@ namespace Proxem.TheaNet.Binding
         {
             var t = typeof(T);
             return Compile<Func<IList<T>, R>>(
-                inputs.Select(i => Tuple.Create((IVar)i, t)).ToList(),
-                new[] { Tuple.Create((IExpr)output, typeof(R)) },
+                inputs,
+                new[] { output },
                 updates,
                 givens,
                 inputsInAList: t,
@@ -126,8 +126,8 @@ namespace Proxem.TheaNet.Binding
             string name = null
         ) =>
             Compile<ParamsFunction<R>>(
-                AddTypes(inputs),
-                new[] { Tuple.Create((IExpr)output, typeof(R)) },
+                inputs,
+                new[] { output },
                 updates,
                 givens,
                 useParams: true,
@@ -144,8 +144,8 @@ namespace Proxem.TheaNet.Binding
             string name = null
         ) =>
             Compile<Func<T, Tuple<R1, R2>>>(
-                new[] { Tuple.Create((IVar)input, typeof(T)) },
-                new[] { Tuple.Create((IExpr)output1, typeof(R1)), Tuple.Create((IExpr)output2, typeof(R2)) },
+                new[] { input },
+                new IExpr[] { output1, output2 },
                 updates,
                 givens,
                 name: name
@@ -158,8 +158,8 @@ namespace Proxem.TheaNet.Binding
             string name = null
         ) =>
             Compile<Func<T1, T2, Tuple<R1, R2>>>(
-                new[] { Tuple.Create((IVar)input1, typeof(T1)), Tuple.Create((IVar)input2, typeof(T2)) },
-                new[] { Tuple.Create((IExpr)output1, typeof(R1)), Tuple.Create((IExpr)output2, typeof(R2)) },
+                new IVar[] { input1, input2 },
+                new IExpr[] { output1, output2 },
                 updates,
                 givens,
                 name: name
@@ -172,8 +172,8 @@ namespace Proxem.TheaNet.Binding
         {
             var t = typeof(T);
             return Compile<Func<IList<T>, Tuple<R1, R2>>>(
-                inputs.Select(i => Tuple.Create((IVar)i, t)).ToList(),
-                new[] { Tuple.Create((IExpr)output1, typeof(R1)), Tuple.Create((IExpr)output2, typeof(R2)) },
+                inputs,
+                new IExpr[] { output1, output2 },
                 updates,
                 givens,
                 name: name
@@ -197,8 +197,8 @@ namespace Proxem.TheaNet.Binding
             string name = null
         ) =>
             Compile<ParamsFunction<R1, R2>>(
-                AddTypes(inputs),
-                new[] { Tuple.Create((IExpr)output1, typeof(R1)), Tuple.Create((IExpr)output2, typeof(R2)) },
+                inputs,
+                new IExpr[] { output1, output2 },
                 updates,
                 givens,
                 useParams: true,
@@ -216,8 +216,8 @@ namespace Proxem.TheaNet.Binding
         ){
             var r = typeof(R);
             return Compile<Func<T, IList<R>>>(
-                new[] { Tuple.Create((IVar)input, typeof(T)) },
-                outputs.Select(o => Tuple.Create((IExpr)o, r)).ToList(),
+                new[] { input },
+                outputs,
                 updates,
                 givens,
                 outputsInAList: r,
@@ -233,8 +233,8 @@ namespace Proxem.TheaNet.Binding
         ){
             var r = typeof(R);
             return Compile<Func<T1, T2, IList<R>>>(
-                new[] { Tuple.Create((IVar)input1, typeof(T1)), Tuple.Create((IVar)input2, typeof(T2)) },
-                outputs.Select(o => Tuple.Create((IExpr)o, r)).ToList(),
+                new IVar[] { input1, input2 },
+                outputs,
                 updates,
                 givens,
                 outputsInAList: r,
@@ -251,8 +251,8 @@ namespace Proxem.TheaNet.Binding
             var t = typeof(T);
             var r = typeof(R);
             return Compile<Func<IList<T>, IList<R>>>(
-                inputs.Select(i => Tuple.Create((IVar)i, t)).ToList(),
-                outputs.Select(o => Tuple.Create((IExpr)o, r)).ToList(),
+                inputs,
+                outputs,
                 updates,
                 givens,
                 inputsInAList: t,
@@ -265,8 +265,8 @@ namespace Proxem.TheaNet.Binding
         #region No outputs
         public static Action Function(OrderedDictionary updates, IDictionary givens = null, string name = null) =>
             Compile<Action>(
-                EmptyArray<Tuple<IVar, Type>>.Value,
-                EmptyArray<Tuple<IExpr, Type>>.Value,
+                EmptyArray<IVar>.Value,
+                EmptyArray<IExpr>.Value,
                 updates,
                 givens,
                 name: name
@@ -279,8 +279,8 @@ namespace Proxem.TheaNet.Binding
             string name = null
         ) =>
             Compile<Action<T1>>(
-                new[] { Tuple.Create((IVar)input, typeof(T1)) },
-                EmptyArray<Tuple<IExpr, Type>>.Value,
+                new[] { input },
+                EmptyArray<IExpr>.Value,
                 updates,
                 givens,
                 name: name
@@ -293,8 +293,8 @@ namespace Proxem.TheaNet.Binding
             string name = null
         ) =>
            Compile<Action<T1, T2>>(
-                new[] { Tuple.Create((IVar)input1, typeof(T1)), Tuple.Create((IVar)input2, typeof(T2)) },
-                EmptyArray<Tuple<IExpr, Type>>.Value,
+                new IVar[] { input1, input2 },
+                EmptyArray<IExpr>.Value,
                 updates,
                 givens,
                 name: name
@@ -307,8 +307,8 @@ namespace Proxem.TheaNet.Binding
             string name = null
         ) =>
             Compile<Action<T1, T2, T3>>(
-                new[] { Tuple.Create((IVar)input1, typeof(T1)), Tuple.Create((IVar)input2, typeof(T2)), Tuple.Create((IVar)input3, typeof(T3)) },
-                EmptyArray<Tuple<IExpr, Type>>.Value,
+                new IVar[] { input1, input2, input3 },
+                EmptyArray<IExpr>.Value,
                 updates,
                 givens,
                 name: name
@@ -321,8 +321,8 @@ namespace Proxem.TheaNet.Binding
             string name = null
         ) =>
             Compile<Action<T1, T2, T3, T4>>(
-                new[] { Tuple.Create((IVar)input1, typeof(T1)), Tuple.Create((IVar)input2, typeof(T2)), Tuple.Create((IVar)input3, typeof(T3)), Tuple.Create((IVar)input4, typeof(T4)) },
-                EmptyArray<Tuple<IExpr, Type>>.Value,
+                new IVar[] { input1, input2, input3, input4 },
+                EmptyArray<IExpr>.Value,
                 updates,
                 givens,
                 name: name
@@ -336,8 +336,8 @@ namespace Proxem.TheaNet.Binding
         ){
             var t = typeof(T);
             return Compile<Action<IList<T>>>(
-                inputs.Select(i => Tuple.Create((IVar)i, t)).ToList(),
-                EmptyArray<Tuple<IExpr, Type>>.Value,
+                inputs,
+                EmptyArray<IExpr>.Value,
                 updates,
                 givens,
                 name: name
@@ -354,7 +354,7 @@ namespace Proxem.TheaNet.Binding
 
         public static Func<Compiler> CompilerFactory = () => new Compiler();
 
-        public static FType Compile<FType>(IList<IVar> inputs, IList<IExpr> outputs,
+        public static FType Compile<FType>(IEnumerable<IVar> inputs, IEnumerable<IExpr> outputs,
             OrderedDictionary updates = null,
             IDictionary givens = null,
             Type inputsInAList = null,
@@ -364,8 +364,8 @@ namespace Proxem.TheaNet.Binding
         )
             where FType : class =>
             Compile<FType>(
-                inputs.Select(v => Tuple.Create(v, ExtractBaseType(v))).ToList(),
-                outputs.Select(e => Tuple.Create(e, ExtractBaseType(e))).ToList(),
+                inputs,
+                outputs,
                 updates, givens,
                 useParams: useParams,
                 name: name
@@ -396,7 +396,7 @@ namespace Proxem.TheaNet.Binding
         /// <param name="useParams">if true the function will expect arguments in a @param array</param>
         /// <param name="name"></param>
         /// <returns>A delegate of the required type</returns>
-        public static FType Compile<FType>(IList<Tuple<IVar, Type>> inputs, IList<Tuple<IExpr, Type>> outputs,
+        public static FType Compile<FType>(IList<IVar> inputs, IList<IExpr> outputs,
             OrderedDictionary updates = null,
             IDictionary givens = null,
             Type inputsInAList = null,
@@ -420,11 +420,11 @@ namespace Proxem.TheaNet.Binding
             if (givens != null)
             {
                 var patch = new Patch(givens, preserveShape: false);
-                outs = outputs.Select(output => patch.Process(output.Item1)).ToList();
+                outs = outputs.Select(output => patch.Process(output)).ToList();
                 patch.Process(updates);
             }
             else
-                outs = outputs.Select(_ => _.Item1).ToList();
+                outs = outputs.ToList();
 
             compiler.Reference(outs);
             compiler.Reference(updates);
@@ -454,10 +454,10 @@ namespace Proxem.TheaNet.Binding
             return compiler.GetMethod<FType>(name);
         }
 
-        private static string InputSignature(IList<Tuple<IVar, Type>> inputs, Type inputsInAList, bool useParams)
+        private static string InputSignature(IList<IVar> inputs, Type inputsInAList, bool useParams)
         {
             if (inputsInAList == null && !useParams)
-                return string.Join(", ", inputs.Select(i => i.Item2.GetName() + " " + i.Item1.Name));
+                return string.Join(", ", inputs.Select(i => i.GetArgumentType().GetName() + " " + i.Name));
             else if (inputsInAList == null && useParams)
                 return "params object[] args";
             else if (inputsInAList != null && useParams)
@@ -466,30 +466,16 @@ namespace Proxem.TheaNet.Binding
                 return $"IList<{inputsInAList.GetName()}> args";
         }
 
-        private static string OutputSignature(IList<Tuple<IExpr, Type>> outputs, Type outputsInAList)
+        private static string OutputSignature(IList<IExpr> outputs, Type outputsInAList)
         {
             if (outputsInAList == null && outputs.Count == 0)
                 return "void";
             else if (outputsInAList == null && outputs.Count == 1)
-                return outputs[0].Item2.GetName();
+                return outputs[0].GetArgumentType().GetName();
             else if (outputsInAList == null && outputs.Count > 1)
-                return $"Tuple<{string.Join(", ", outputs.Select(i => i.Item2.GetName()))}>";
+                return $"Tuple<{string.Join(", ", outputs.Select(i => i.GetArgumentType().GetName()))}>";
             else
                 return $"IList<{outputsInAList.GetName()}>";
-        }
-
-        private static Type RuntimeType<T>(IExpr<T> expr) => typeof(T);
-
-        private static IList<Tuple<T, Type>> AddTypes<T>(IEnumerable<T> exprs) where T : IExpr
-        {
-            var res = new List<Tuple<T, Type>>();
-            foreach (T x in exprs)
-            {
-                dynamic y = x;
-                Type t = RuntimeType(y);
-                res.Add(Tuple.Create(x, t));
-            }
-            return res;
         }
     }
 }

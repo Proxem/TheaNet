@@ -65,6 +65,8 @@ namespace Proxem.TheaNet
             substitutions.Add(this, result);
             return result;
         }
+
+        public override Type GetArgumentType() => typeof(Tuple<object>);
     }
 
     public static class ITupleExtension

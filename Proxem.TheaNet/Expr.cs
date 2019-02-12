@@ -60,6 +60,8 @@ namespace Proxem.TheaNet
         /// <param name="substitutions">Dictionary of expressions to replace. Also used as a cache.</param>
         /// <returns>The new expression.</returns>
         IExpr Patch(Patch substitutions);
+
+        Type GetArgumentType();
     }
 
     public abstract class Expr : IExpr
@@ -109,6 +111,8 @@ namespace Proxem.TheaNet
         public abstract IExpr Patch(Patch substitutions);
 
         public abstract void Process(IProcessor processor);
+
+        public abstract Type GetArgumentType();
     }
 
 
