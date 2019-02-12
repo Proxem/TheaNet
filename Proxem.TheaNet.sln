@@ -7,7 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Proxem.TheaNet.Test", "Prox
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Proxem.TheaNet.Test.Mkl", "Proxem.TheaNet.Test.Mkl\Proxem.TheaNet.Test.Mkl.csproj", "{D1E90906-2E3E-4A4A-B890-CBA0DC64F7BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Proxem.TheaNet", "Proxem.TheaNet\Proxem.TheaNet.csproj", "{E59A5DD9-A78D-4739-83AD-4EB9C2BF2E6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Proxem.TheaNet", "Proxem.TheaNet\Proxem.TheaNet.csproj", "{E59A5DD9-A78D-4739-83AD-4EB9C2BF2E6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Proxem.TheaNet.Test.Core", "Proxem.TheaNet.Test.Core\Proxem.TheaNet.Test.Core.csproj", "{893EAB85-A1A5-44F0-A29A-E69FAC1861A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Proxem.TheaNet.Console.Core", "Proxem.TheaNet.Console.Core\Proxem.TheaNet.Console.Core.csproj", "{6E2640DA-A037-416B-A94E-AEFA4FE8942B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +45,22 @@ Global
 		{E59A5DD9-A78D-4739-83AD-4EB9C2BF2E6C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E59A5DD9-A78D-4739-83AD-4EB9C2BF2E6C}.Release|x64.ActiveCfg = Release|Any CPU
 		{E59A5DD9-A78D-4739-83AD-4EB9C2BF2E6C}.Release|x64.Build.0 = Release|Any CPU
+		{893EAB85-A1A5-44F0-A29A-E69FAC1861A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{893EAB85-A1A5-44F0-A29A-E69FAC1861A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{893EAB85-A1A5-44F0-A29A-E69FAC1861A5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{893EAB85-A1A5-44F0-A29A-E69FAC1861A5}.Debug|x64.Build.0 = Debug|Any CPU
+		{893EAB85-A1A5-44F0-A29A-E69FAC1861A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{893EAB85-A1A5-44F0-A29A-E69FAC1861A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{893EAB85-A1A5-44F0-A29A-E69FAC1861A5}.Release|x64.ActiveCfg = Release|Any CPU
+		{893EAB85-A1A5-44F0-A29A-E69FAC1861A5}.Release|x64.Build.0 = Release|Any CPU
+		{6E2640DA-A037-416B-A94E-AEFA4FE8942B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E2640DA-A037-416B-A94E-AEFA4FE8942B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E2640DA-A037-416B-A94E-AEFA4FE8942B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6E2640DA-A037-416B-A94E-AEFA4FE8942B}.Debug|x64.Build.0 = Debug|Any CPU
+		{6E2640DA-A037-416B-A94E-AEFA4FE8942B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E2640DA-A037-416B-A94E-AEFA4FE8942B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E2640DA-A037-416B-A94E-AEFA4FE8942B}.Release|x64.ActiveCfg = Release|Any CPU
+		{6E2640DA-A037-416B-A94E-AEFA4FE8942B}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
