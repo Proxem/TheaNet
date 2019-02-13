@@ -35,11 +35,11 @@ namespace Proxem.TheaNet.Binding
         //}
 
         Dictionary<IExpr, int> references;
-        Tuple<IVar, IExpr>[] bindings;
+        (IVar, IExpr)[] bindings;
 
         public int this[IExpr e] => references.ContainsKey(e) ? references[e] : 0;
 
-        public ReferenceCounter(Dictionary<IExpr, int> references = null, Tuple<IVar, IExpr>[] bindings = null)
+        public ReferenceCounter(Dictionary<IExpr, int> references = null, (IVar, IExpr)[] bindings = null)
         {
             this.references = references ?? new Dictionary<IExpr, int>();
             this.bindings = bindings;
@@ -242,7 +242,7 @@ namespace Proxem.TheaNet.Binding
 
         public void ProcessElementwise<T>(Tensor<T>.Elementwise target)
         {
-            var mapping = target.Vars.Zip(target.Inputs, Tuple.Create<IVar, IExpr>);
+            var mapping = (target.Vars, target.Inputs).Zip<IVar, IExpr>();
             var bindings = this.bindings != null ? this.bindings.Concat(mapping).ToArray() : mapping.ToArray();
             target.Abstraction.Process(new ReferenceCounter(this.references, bindings));
         }

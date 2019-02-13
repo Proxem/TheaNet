@@ -85,11 +85,11 @@ namespace Proxem.TheaNet.Samples
             Mul = Op.Function(input: (a, b), output: Op.Argmax(x));
         }
 
-        public Tuple<int, int, int> NextSample()
+        public (int, int, int) NextSample()
         {
             var x = NN.Random.NextInt(N);
             var y = NN.Random.NextInt(N);
-            return Tuple.Create(x, y, (x * y) % N);
+            return (x, y, (x * y) % N);
         }
 
         public void TestOn()
@@ -173,10 +173,10 @@ namespace Proxem.TheaNet.Samples
             Const = Op.Function(a, c);
         }
 
-        public Tuple<int, int> NextSample()
+        public (int, int) NextSample()
         {
             var x = NN.Random.NextInt(N);
-            return Tuple.Create(x, gold);
+            return (x, gold);
         }
 
         public float TestOn(int n)

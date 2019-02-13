@@ -246,7 +246,7 @@ namespace Proxem.TheaNet.Binding
                     return true;     // part of the expression was not reachable, exit (processed = true)
             }
 
-            var arguments = elementwise.Vars.Zip(elementwise.Inputs, Tuple.Create).ToList();
+            var arguments = (elementwise.Vars, elementwise.Inputs).Zip().ToList();
             var expr = ApplyLambdaAbstraction(elementwise.Abstraction, arguments, compiler);
 
             using (LoopInvariant(arguments.Select(_ => _.Item1)))
@@ -270,7 +270,7 @@ namespace Proxem.TheaNet.Binding
                     compiler.Scope.Declare(local, compiler);
 
                 IExpr target = expr;
-                var bindings = arguments.Zip(locals, (a, l) => Tuple.Create<IVar, IExpr>(a.Item1, l)).ToArray();
+                var bindings = arguments.Zip(locals, (a, l) => ((IVar)a.Item1, (IExpr)l)).ToArray();
                 foreach (var binding in bindings)
                 {
                     if (binding.Item1 == target)
@@ -335,7 +335,7 @@ namespace Proxem.TheaNet.Binding
         /// <param name="arguments"></param>
         /// <param name="compiler"></param>
         /// <returns></returns>
-        private Scalar<T> ApplyLambdaAbstraction<T>(Scalar<T> abstraction, List<Tuple<Scalar<T>.Var, Tensor<T>>> arguments, Compiler compiler)
+        private Scalar<T> ApplyLambdaAbstraction<T>(Scalar<T> abstraction, List<(Scalar<T>.Var, Tensor<T>)> arguments, Compiler compiler)
         {
             for (int i = 0; i < arguments.Count; i++)
             {
@@ -354,7 +354,7 @@ namespace Proxem.TheaNet.Binding
                 var elementwise = arguments[i].Item2 as Tensor<T>.Elementwise;
                 if (elementwise != null && !compiler.Scope.Contains(elementwise) && compiler.GetCount(elementwise) <= 1)
                 {
-                    var elementwiseArguments = elementwise.Vars.Zip(elementwise.Inputs, (var, input) => Tuple.Create(var, input)).ToList();
+                    var elementwiseArguments = (elementwise.Vars, elementwise.Inputs).Zip().ToList();
                     var elementwiseAbstraction = ApplyLambdaAbstraction(elementwise.Abstraction, elementwiseArguments, compiler);
 
                     abstraction = BetaReduce(ref i, abstraction, arguments, elementwiseAbstraction, elementwiseArguments, compiler);
@@ -367,8 +367,8 @@ namespace Proxem.TheaNet.Binding
         const int MaxLambdaVars = 4;
 
         private static Scalar<T> BetaReduce<T>(ref int i,
-            Scalar<T> abstraction1, List<Tuple<Scalar<T>.Var, Tensor<T>>> arguments1,
-            Scalar<T> abstraction2, List<Tuple<Scalar<T>.Var, Tensor<T>>> arguments2,
+            Scalar<T> abstraction1, List<(Scalar<T>.Var, Tensor<T>)> arguments1,
+            Scalar<T> abstraction2, List<(Scalar<T>.Var, Tensor<T>)> arguments2,
             Compiler compiler
         )
         {

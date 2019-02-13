@@ -440,7 +440,7 @@ namespace Proxem.TheaNet
             var patched = exprs.Select(i =>
                 i?.Patch(substitutions)
             ).Cast<T>().ToArray();
-            changed = exprs.Zip(patched, Tuple.Create).Any(xy => xy.Item1 != xy.Item2);
+            changed = (exprs, patched).Zip().Any(xy => xy.Item1 != xy.Item2);
             return patched;
         }
 

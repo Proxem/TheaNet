@@ -27,7 +27,7 @@ namespace Proxem.TheaNet.Binding
     public class InlineCodeGenerator: IProcessor
     {
         public string Result;
-        private Tuple<IVar, IExpr>[] bindings;
+        private (IVar, IExpr)[] bindings;
 
         public static string GetCode(IExpr target)
         {
@@ -35,14 +35,14 @@ namespace Proxem.TheaNet.Binding
             return generator.GetCode(target, int.MaxValue);
         }
 
-        public static string Process(IExpr expr, Tuple<IVar, IExpr>[] bindings = null)
+        public static string Process(IExpr expr, (IVar, IExpr)[] bindings = null)
         {
             var processor = new InlineCodeGenerator(bindings);
             expr.Process(processor);
             return processor.Result;
         }
 
-        public InlineCodeGenerator(Tuple<IVar, IExpr>[] bindings)
+        public InlineCodeGenerator((IVar, IExpr)[] bindings)
         {
             this.bindings = bindings;
         }
@@ -293,7 +293,7 @@ namespace Proxem.TheaNet.Binding
 
         public void ProcessElementwise<T>(Tensor<T>.Elementwise target)
         {
-            var mapping = target.Vars.Zip(target.Inputs, Tuple.Create<IVar, IExpr>);
+            var mapping = (target.Vars, target.Inputs).Zip<IVar, IExpr>();
             var bindings = this.bindings != null ? this.bindings.Concat(mapping).ToArray() : mapping.ToArray();
             this.Result = InlineCodeGenerator.Process(target.Abstraction, bindings);
         }

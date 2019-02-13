@@ -32,7 +32,7 @@ namespace Proxem.TheaNet
         //void Backward(int item, object delta, Backpropagation bp);
     }
 
-    public interface ITuple<A, A_, B, B_> : IExpr<Tuple<A_, B_>>, ITuple//, ITuple1<A, A_>, ITuple2<B, B_>
+    public interface ITuple<A, A_, B, B_> : IExpr<(A_, B_)>, ITuple//, ITuple1<A, A_>, ITuple2<B, B_>
         where A : class, IExpr<A_>
         where B : class, IExpr<B_>
     {

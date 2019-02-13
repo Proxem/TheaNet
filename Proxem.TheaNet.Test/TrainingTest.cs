@@ -50,10 +50,10 @@ namespace Proxem.TheaNet.Test
         {
             var xor = new[]
             {
-                Tuple.Create(new [] { 0f, 0f }, new [] { 0f }),
-                Tuple.Create(new [] { 0f, 1f }, new [] { 1f }),
-                Tuple.Create(new [] { 1f, 0f }, new [] { 1f }),
-                Tuple.Create(new [] { 1f, 1f }, new [] { 0f }),
+                (new [] { 0f, 0f }, new [] { 0f }),
+                (new [] { 0f, 1f }, new [] { 1f }),
+                (new [] { 1f, 0f }, new [] { 1f }),
+                (new [] { 1f, 1f }, new [] { 0f }),
             };
 
             var ff = new NeuralNet.Network(2, 2, 1);
@@ -68,10 +68,10 @@ namespace Proxem.TheaNet.Test
         {
             var xor = new[]
             {
-                Tuple.Create(NN.Array(0f, 0f), 0),
-                Tuple.Create(NN.Array(0f, 1f), 1),
-                Tuple.Create(NN.Array(1f, 0f), 1),
-                Tuple.Create(NN.Array(1f, 1f), 0),
+                (NN.Array(0f, 0f), 0),
+                (NN.Array(0f, 1f), 1),
+                (NN.Array(1f, 0f), 1),
+                (NN.Array(1f, 1f), 0),
             };
 
             var ff = new Simple(2, 3, 2, 1f);
@@ -295,10 +295,10 @@ namespace Proxem.TheaNet.Test
 
             var xor = new[]
             {
-                Tuple.Create(new [] { 0f, 0f, 0f }, 0),
-                Tuple.Create(new [] { 0f, 0f, 1f }, 1),
-                Tuple.Create(new [] { 0f, 1f, 0f }, 1),
-                Tuple.Create(new [] { 0f, 1f, 1f }, 0),
+                (new [] { 0f, 0f, 0f }, 0),
+                (new [] { 0f, 0f, 1f }, 1),
+                (new [] { 0f, 1f, 0f }, 1),
+                (new [] { 0f, 1f, 1f }, 0),
             };
 
             var lr = 0.01f;
@@ -333,10 +333,10 @@ namespace Proxem.TheaNet.Test
 
             var xor = new[]
             {
-                Tuple.Create(new [] { 0f, 0f, 0f }, 0),
-                Tuple.Create(new [] { 0f, 0f, 1f }, 1),
-                Tuple.Create(new [] { 0f, 1f, 0f }, 1),
-                Tuple.Create(new [] { 0f, 1f, 1f }, 0),
+                (new [] { 0f, 0f, 0f }, 0),
+                (new [] { 0f, 0f, 1f }, 1),
+                (new [] { 0f, 1f, 0f }, 1),
+                (new [] { 0f, 1f, 1f }, 0),
             };
 
             var expected = new[] { 0.8451504f, 0.785709f, 0.7685911f, 0.7557927f, 0.7443435f, 0.7313102f, 0.7108455f, 0.6661955f, 0.5576075f, 0.3245486f, 0.08225087f, 0.02822098f, 0.0153197f, 0.01012096f, 0.007412266f };
@@ -369,10 +369,10 @@ namespace Proxem.TheaNet.Test
 
             var xor = new[]
             {
-                Tuple.Create(new [] { 0f, 0f, 0f }, 0),
-                Tuple.Create(new [] { 0f, 0f, 1f }, 1),
-                Tuple.Create(new [] { 0f, 1f, 0f }, 1),
-                Tuple.Create(new [] { 0f, 1f, 1f }, 0),
+                (new [] { 0f, 0f, 0f }, 0),
+                (new [] { 0f, 0f, 1f }, 1),
+                (new [] { 0f, 1f, 0f }, 1),
+                (new [] { 0f, 1f, 1f }, 0),
             };
 
             var lr = 0.1f;
@@ -405,10 +405,10 @@ namespace Proxem.TheaNet.Test
         {
             var xor = new[]
             {
-                Tuple.Create(new [] { 0f, 0f }, new [] { 0f }),
-                Tuple.Create(new [] { 0f, 1f }, new [] { 1f }),
-                Tuple.Create(new [] { 1f, 0f }, new [] { 1f }),
-                Tuple.Create(new [] { 1f, 1f }, new [] { 0f }),
+                (new [] { 0f, 0f }, new [] { 0f }),
+                (new [] { 0f, 1f }, new [] { 1f }),
+                (new [] { 1f, 0f }, new [] { 1f }),
+                (new [] { 1f, 1f }, new [] { 0f }),
             };
 
             var nh = 3; // hidden layer
@@ -446,10 +446,10 @@ namespace Proxem.TheaNet.Test
         {
             var xor = new[]
             {
-                Tuple.Create(new [] { 0f, 0f }, new [] { 0f }),
-                Tuple.Create(new [] { 0f, 1f }, new [] { 1f }),
-                Tuple.Create(new [] { 1f, 0f }, new [] { 1f }),
-                Tuple.Create(new [] { 1f, 1f }, new [] { 0f }),
+                (new [] { 0f, 0f }, new [] { 0f }),
+                (new [] { 0f, 1f }, new [] { 1f }),
+                (new [] { 1f, 0f }, new [] { 1f }),
+                (new [] { 1f, 1f }, new [] { 0f }),
             };
 
             var nh = 3; // hidden layer

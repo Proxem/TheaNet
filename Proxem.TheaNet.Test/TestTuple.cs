@@ -30,14 +30,14 @@ namespace Proxem.TheaNet.Test
     [TestClass]
     public class TestTuple
     {
-        class TupleSS : Tuple2, ITuple<Scalar<float>, float, Scalar<float>, float>, IExpr<Tuple<float, float>>
+        class TupleSS : Tuple2, ITuple<Scalar<float>, float, Scalar<float>, float>, IExpr<(float, float)>
         {
             public TupleSS(Scalar<float> x, Scalar<float> y) : base(x, y) { }
 
             public Scalar<float> x => (Scalar<float>)Inputs[0];
             public Scalar<float> y => (Scalar<float>)Inputs[1];
 
-            public override void Process(IProcessor processor) => processor.ProcessFunctionCall<Tuple<float, float>>(this, "Tuple.Create");
+            public override void Process(IProcessor processor) => processor.ProcessFunctionCall<(float, float)>(this, "Tuple.Create");
 
             public void Backward1(Scalar<float> delta, Backpropagation bp) => bp.PushGradientTo(x, delta);
 
@@ -82,7 +82,7 @@ namespace Proxem.TheaNet.Test
         {
             public TupleTT(Tensor<float> x, Tensor<float> y) : base(x, y) { }
 
-            public override void  Process(IProcessor processor) => processor.ProcessFunctionCall<Tuple<Array<float>, Array<float>>>(this, "Tuple.Create");
+            public override void  Process(IProcessor processor) => processor.ProcessFunctionCall<(Array<float>, Array<float>)>(this, "Tuple.Create");
 
             public Tensor<float> x => (Tensor<float>)Inputs[0];
             public Tensor<float> y => (Tensor<float>)Inputs[1];
@@ -152,7 +152,7 @@ namespace Proxem.TheaNet.Test
 
             public void Backward2(Scalar<float> delta, Backpropagation bp) => bp.PushGradientTo(y, delta);
 
-            public override void Process(IProcessor processor) => processor.ProcessFunctionCall<Tuple<Array<float>, float>>(this, "Tuple.Create");
+            public override void Process(IProcessor processor) => processor.ProcessFunctionCall<(Array<float>, float)>(this, "Tuple.Create");
 
             public override Tuple2 Clone(IReadOnlyList<IExpr> inputs) => new TupleTS((Tensor<float>)inputs[0], (Scalar<float>)inputs[1]);
         }

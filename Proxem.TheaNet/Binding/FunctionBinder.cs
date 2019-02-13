@@ -137,13 +137,13 @@ namespace Proxem.TheaNet.Binding
         #endregion
         #region Two outputs
 
-        public static Func<T, Tuple<R1, R2>> Function<T, R1, R2>(
+        public static Func<T, (R1, R2)> Function<T, R1, R2>(
             IVar<T> input, IExpr<R1> output1, IExpr<R2> output2,
             OrderedDictionary updates = null,
             IDictionary givens = null,
             string name = null
         ) =>
-            Compile<Func<T, Tuple<R1, R2>>>(
+            Compile<Func<T, (R1, R2)>>(
                 new[] { input },
                 new IExpr[] { output1, output2 },
                 updates,
@@ -151,13 +151,13 @@ namespace Proxem.TheaNet.Binding
                 name: name
             );
 
-        public static Func<T1, T2, Tuple<R1, R2>> Function<T1, T2, R1, R2>(
+        public static Func<T1, T2, (R1, R2)> Function<T1, T2, R1, R2>(
             IVar<T1> input1, IVar<T2> input2, IExpr<R1> output1, IExpr<R2> output2,
             OrderedDictionary updates = null,
             IDictionary givens = null,
             string name = null
         ) =>
-            Compile<Func<T1, T2, Tuple<R1, R2>>>(
+            Compile<Func<T1, T2, (R1, R2)>>(
                 new IVar[] { input1, input2 },
                 new IExpr[] { output1, output2 },
                 updates,
@@ -165,13 +165,13 @@ namespace Proxem.TheaNet.Binding
                 name: name
             );
 
-        public static Func<IList<T>, Tuple<R1, R2>> Function<T, R1, R2>(IEnumerable<IVar<T>> inputs, IExpr<R1> output1, IExpr<R2> output2,
+        public static Func<IList<T>, (R1, R2)> Function<T, R1, R2>(IEnumerable<IVar<T>> inputs, IExpr<R1> output1, IExpr<R2> output2,
             OrderedDictionary/*<IExpr<T>.Shared, IExpr<T>>*/ updates = null,
             IDictionary givens = null,
             string name = null)
         {
             var t = typeof(T);
-            return Compile<Func<IList<T>, Tuple<R1, R2>>>(
+            return Compile<Func<IList<T>, (R1, R2)>>(
                 inputs,
                 new IExpr[] { output1, output2 },
                 updates,
@@ -180,7 +180,7 @@ namespace Proxem.TheaNet.Binding
             );
         }
 
-        public delegate Tuple<R1, R2> ParamsFunction<R1, R2>(params object[] args);
+        public delegate (R1, R2) ParamsFunction<R1, R2>(params object[] args);
 
         /// <summary>
         /// Creates a function with two outputs.
@@ -473,7 +473,7 @@ namespace Proxem.TheaNet.Binding
             else if (outputsInAList == null && outputs.Count == 1)
                 return outputs[0].GetArgumentType().GetName();
             else if (outputsInAList == null && outputs.Count > 1)
-                return $"Tuple<{string.Join(", ", outputs.Select(i => i.GetArgumentType().GetName()))}>";
+                return $"({string.Join(", ", outputs.Select(i => i.GetArgumentType().GetName()))})";
             else
                 return $"IList<{outputsInAList.GetName()}>";
         }

@@ -168,7 +168,7 @@ namespace Proxem.TheaNet
         /// A specialized version of <see cref="RandomGradientCheck{X}(IList{IVar}, TheaNet.Scalar{X}, Tensor{X}.Shared, Tensor{X}, Tensor{X}, IDictionary)"/>
         /// with only one input.
         /// </summary>
-        public static Func<Array<X>, X, Tuple<X, X>> RandomGradientCheck<X>(Tensor<X>.Var input, Scalar<X> output, Tensor<X>.Shared x, Tensor<X> computed = null, IDictionary givens = null)
+        public static Func<Array<X>, X, (X, X)> RandomGradientCheck<X>(Tensor<X>.Var input, Scalar<X> output, Tensor<X>.Shared x, Tensor<X> computed = null, IDictionary givens = null)
         {
             var epsilon = Scalar<X>("epsilon");
             var eps = Random.Uniform(-epsilon, epsilon, x.Shape);
@@ -228,13 +228,13 @@ namespace Proxem.TheaNet
         }
 
         [Obsolete]
-        public static Func<T1, Tuple<T2, T3>> Function<T1, T2, T3>(IVar<T1> input, IExpr<T2> output1, IExpr<T3> output2,
+        public static Func<T1, (T2, T3)> Function<T1, T2, T3>(IVar<T1> input, IExpr<T2> output1, IExpr<T3> output2,
             OrderedDictionary/*<TensorExpr.Shared, TensorExpr>*/ updates = null, IDictionary givens = null, string name = null)
         {
             return FunctionBinder.Function(input, output1, output2, updates, givens, name: name);
         }
 
-        public static Func<T1, Tuple<T2, T3>> Function<T1, T2, T3>(IVar<T1> input, (IExpr<T2> x1, IExpr<T3> x2) output,
+        public static Func<T1, (T2, T3)> Function<T1, T2, T3>(IVar<T1> input, (IExpr<T2> x1, IExpr<T3> x2) output,
             OrderedDictionary/*<TensorExpr.Shared, TensorExpr>*/ updates = null, IDictionary givens = null, string name = null)
         {
             return FunctionBinder.Function(input, output.x1, output.x2, updates, givens, name: name);
@@ -247,13 +247,13 @@ namespace Proxem.TheaNet
         }
 
         [Obsolete]
-        public static Func<IList<T1>, Tuple<T2, T3>> Function<T1, T2, T3>(IEnumerable<IVar<T1>> inputs, IExpr<T2> output1, IExpr<T3> output2,
+        public static Func<IList<T1>, (T2, T3)> Function<T1, T2, T3>(IEnumerable<IVar<T1>> inputs, IExpr<T2> output1, IExpr<T3> output2,
             OrderedDictionary/*<TensorExpr.Shared, TensorExpr>*/ updates = null, IDictionary givens = null, string name = null)
         {
             return FunctionBinder.Function(inputs, output1, output2, updates, givens, name: name);
         }
 
-        public static Func<IList<T1>, Tuple<T2, T3>> Function<T1, T2, T3>(IEnumerable<IVar<T1>> inputs, (IExpr<T2> x1, IExpr<T3> x2) output,
+        public static Func<IList<T1>, (T2, T3)> Function<T1, T2, T3>(IEnumerable<IVar<T1>> inputs, (IExpr<T2> x1, IExpr<T3> x2) output,
             OrderedDictionary/*<TensorExpr.Shared, TensorExpr>*/ updates = null, IDictionary givens = null, string name = null)
         {
             return FunctionBinder.Function(inputs, output.x1, output.x2, updates, givens, name: name);
@@ -279,13 +279,13 @@ namespace Proxem.TheaNet
         }
 
         [Obsolete]
-        public static Func<T1, T2, Tuple<T3, T4>> Function<T1, T2, T3, T4>(IVar<T1> input1, IVar<T2> input2, IExpr<T3> output1, IExpr<T4> output2,
+        public static Func<T1, T2, (T3, T4)> Function<T1, T2, T3, T4>(IVar<T1> input1, IVar<T2> input2, IExpr<T3> output1, IExpr<T4> output2,
             OrderedDictionary/*<TensorExpr.Shared, TensorExpr>*/ updates = null, IDictionary givens = null, string name = null)
         {
             return FunctionBinder.Function(input1, input2, output1, output2, updates, givens, name: name);
         }
 
-        public static Func<T1, T2, Tuple<T3, T4>> Function<T1, T2, T3, T4>((IVar<T1> x1, IVar<T2> x2) input, (IExpr<T3> x1, IExpr<T4> x2) output,
+        public static Func<T1, T2, (T3, T4)> Function<T1, T2, T3, T4>((IVar<T1> x1, IVar<T2> x2) input, (IExpr<T3> x1, IExpr<T4> x2) output,
             OrderedDictionary/*<TensorExpr.Shared, TensorExpr>*/ updates = null, IDictionary givens = null, string name = null)
         {
             return FunctionBinder.Function(input.x1, input.x2, output.x1, output.x2, updates, givens, name: name);

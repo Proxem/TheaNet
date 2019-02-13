@@ -20,6 +20,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Proxem.TheaNet;
 
 namespace Proxem.TheaNet.Test
 {
@@ -248,10 +249,10 @@ namespace Proxem.TheaNet.Test
             else
             {
                 // at most one will make recursive calls
-                foreach (var e in node.Inputs.Zip(other.Inputs, Tuple.Create))
+                foreach (var (n, o) in (node.Inputs, other.Inputs).Zip())
                 {
-                    VisitFloat(e.Item1, e.Item2);
-                    VisitFloatArray(e.Item1, e.Item2);
+                    VisitFloat(n, o);
+                    VisitFloatArray(n, o);
                 }
             }
         }
@@ -264,10 +265,10 @@ namespace Proxem.TheaNet.Test
             else
             {
                 // at most one will make recursive calls
-                foreach(var e in node.Inputs.Zip(other.Inputs, Tuple.Create))
+                foreach(var (n, o) in (node.Inputs, other.Inputs).Zip())
                 {
-                    VisitFloat(e.Item1, e.Item2);
-                    VisitFloatArray(e.Item1, e.Item2);
+                    VisitFloat(n, o);
+                    VisitFloatArray(n, o);
                 }
             }
         }

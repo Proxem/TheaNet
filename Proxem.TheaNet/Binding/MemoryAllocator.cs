@@ -60,11 +60,11 @@ namespace Proxem.TheaNet.Binding
     {
 
         readonly Dictionary<IExpr, int> references;
-        private readonly Tuple<IVar, IExpr>[] bindings;
+        private readonly (IVar, IExpr)[] bindings;
 
         /// <param name="references">Created with ReferenceCounter</param>
         /// <param name="bindings"></param>
-        public MemoryAllocator(Dictionary<IExpr, int> references, Tuple<IVar, IExpr>[] bindings = null)
+        public MemoryAllocator(Dictionary<IExpr, int> references, (IVar, IExpr)[] bindings = null)
         {
             this.bindings = bindings;
             this.references = references;
@@ -346,7 +346,7 @@ namespace Proxem.TheaNet.Binding
 
             Decrement(node.Inputs);
 
-            var mapping = node.Vars.Zip(node.Inputs, Tuple.Create<IVar, IExpr>);
+            var mapping = (node.Vars, node.Inputs).Zip<IVar, IExpr>();
             var bindings = this.bindings != null ? this.bindings.Concat(mapping).ToArray() : mapping.ToArray();
             node.Abstraction.Process(new MemoryAllocator(this.references, bindings));
 

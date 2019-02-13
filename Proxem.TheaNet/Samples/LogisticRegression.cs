@@ -98,7 +98,7 @@ namespace Proxem.TheaNet.Samples
             return T.Mean(T.Neq(this.y_pred, y));
         }
 
-        public static Tuple<Tensor<float>.Shared, Tensor<int>.Shared>[] LoadData(string path)
+        public static (Tensor<float>.Shared, Tensor<int>.Shared)[] LoadData(string path)
         {
             Trace.WriteLine("... loading data");
 
@@ -112,9 +112,9 @@ namespace Proxem.TheaNet.Samples
             var valid_set_y = NN.LoadText<int>(Path.Combine(path, "valid_set_y.txt"))[Slicer._, 0];
 
             return new[] {
-                Tuple.Create(T.Shared(train_set_x, "train_set_x"), T.Shared(train_set_y, "train_set_y")),
-                Tuple.Create(T.Shared(valid_set_x, "valid_set_x"), T.Shared(valid_set_y, "valid_set_y")),
-                Tuple.Create(T.Shared(test_set_x, "test_set_x"), T.Shared(test_set_y, "test_set_y"))
+                (T.Shared(train_set_x, "train_set_x"), T.Shared(train_set_y, "train_set_y")),
+                (T.Shared(valid_set_x, "valid_set_x"), T.Shared(valid_set_y, "valid_set_y")),
+                (T.Shared(test_set_x, "test_set_x"), T.Shared(test_set_y, "test_set_y"))
             };
         }
 

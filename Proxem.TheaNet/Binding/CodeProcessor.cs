@@ -32,16 +32,16 @@ namespace Proxem.TheaNet.Binding
     {
         private Compiler Compiler;
         private string Result;
-        private Tuple<IVar, IExpr>[] Bindings;
+        private (IVar, IExpr)[] Bindings;
 
-        public static string Process(Compiler compiler, IExpr target, params Tuple<IVar, IExpr>[] bindings)
+        public static string Process(Compiler compiler, IExpr target, params (IVar, IExpr)[] bindings)
         {
             var processor = new CodeProcessor(compiler, bindings);
             target.Process(processor);
             return processor.Result;
         }
 
-        private CodeProcessor(Compiler compiler, Tuple<IVar, IExpr>[] bindings)
+        private CodeProcessor(Compiler compiler, (IVar, IExpr)[] bindings)
         {
             this.Compiler = compiler;
             this.Bindings = bindings;
@@ -249,7 +249,7 @@ namespace Proxem.TheaNet.Binding
         public void ProcessTuple(ITuple target, params IExpr[] args)
         {
             // TODO: we don't need ProcessTuple, the point of Tuple is to describe function returning tuple
-            this.Result = $"Tuple.Create({string.Join(", ", args.Select(arg => this.GetCode(arg)))})";
+            this.Result = $"({string.Join(", ", args.Select(arg => this.GetCode(arg)))})";
         }
 
         public void ProcessFor<T>(Tensor<T>.For target)
@@ -309,7 +309,7 @@ namespace Proxem.TheaNet.Binding
         {
             // the elementwise is optimized by the CodeGenerator so it's not generally called.
             // This only server as default implementation
-            var mapping = target.Vars.Zip(target.Inputs, Tuple.Create<IVar, IExpr>);
+            var mapping = (target.Vars, target.Inputs).Zip<IVar, IExpr>();
             var bindings = this.Bindings.Concat(mapping).ToArray();
             Result = CodeProcessor.Process(Compiler, target.Abstraction, bindings);
         }

@@ -213,7 +213,7 @@ namespace Proxem.TheaNet.Binding
             else if (outputsInAList == null && outputs.Count == 1)
                 EmitReturn(outputs[0]);
             else if (outputsInAList == null)
-                EmitLine($"return Tuple.Create({string.Join(", ", outputs.Select(output => Scope.GetVar(output)))});");
+                EmitLine($"return ({string.Join(", ", outputs.Select(output => Scope.GetVar(output)))});");
             else
                 EmitLine($"return new {outputsInAList.GetName()}[] {{ {string.Join(", ", outputs.Select(o => Scope.GetVar(o)))} }};");
 

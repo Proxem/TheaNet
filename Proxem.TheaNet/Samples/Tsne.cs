@@ -158,14 +158,14 @@ namespace Proxem.TheaNet.Samples
         /// <summary>
         /// Compute the perplexity and the P-row for a specific value of the precision of a Gaussian distribution.
         /// </summary>
-        public Tuple<float, Array<float>> Hbeta(Array<float> D, float beta = 1.0f)
+        public (float, Array<float>) Hbeta(Array<float> D, float beta = 1.0f)
         {
             // Compute P-row and corresponding perplexity
             var P = NN.Exp(-beta * D);
             var sumP = NN.Sum(P);
             var H = (float) Math.Log(sumP) + beta * NN.Sum(D * P) / sumP;
             P.Scale(1 / sumP, result: P);
-            return Tuple.Create(H, P);
+            return (H, P);
         }
 
         public OrderedDictionary MomentumUpdate(Tensor<float>.Shared W, Tensor<float>.Shared gains, Tensor<float>.Shared iW, Tensor<float> dW, float lr, float rho=0.8f, OrderedDictionary dic = null)

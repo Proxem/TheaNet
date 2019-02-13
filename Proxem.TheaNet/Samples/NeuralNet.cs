@@ -79,9 +79,9 @@ namespace Proxem.TheaNet.Samples
                 }
             }
 
-            public IEnumerable<double> Backprop(float eta, float epsilon, int timeout, Tuple<float[], float[]>[] tf)
+            public IEnumerable<double> Backprop(float eta, float epsilon, int timeout, (float[], float[])[] tf)
             {
-                var ta = tf.Select((x, i) => Tuple.Create(
+                var ta = tf.Select((x, i) => (
                     NN.Array<float>(x.Item1)/*[_, NewAxis]*/,
                     NN.Array<float>(x.Item2)/*[NewAxis ,_]*/
                 )).ToArray();

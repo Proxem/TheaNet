@@ -411,12 +411,8 @@ namespace Proxem.TheaNet
 
             if (outputsInfo != null)
             {
-                foreach (var var_expr_output in recursiveVariables.Zip(expressions, Tuple.Create).Zip(outputsInfo, Tuple.Create))
+                foreach (var (variable, expr, seed) in (recursiveVariables, expressions, outputsInfo).Zip())
                 {
-                    var variable = var_expr_output.Item1.Item1;
-                    var expr = var_expr_output.Item1.Item2;
-                    var seed = var_expr_output.Item2;
-
                     if (seed == null)
                         AddOutput_(expr);
                     else
@@ -570,8 +566,8 @@ namespace Proxem.TheaNet
                 && patchExpressions == expressions)
             {
                 // the expressions have been correctly patched
-                foreach (var expr_patch in expressions.Zip(patchExpressions, Tuple.Create))
-                    substitutions.Add_(expr_patch.Item1, expr_patch.Item2);
+                foreach (var (expr, value) in (expressions, patchExpressions).Zip())
+                    substitutions.Add_(expr, value);
                 result = this;
             }
             else
