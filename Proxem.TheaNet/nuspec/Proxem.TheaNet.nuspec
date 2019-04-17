@@ -2,7 +2,7 @@
 <package  xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>    
     <id>Proxem.TheaNet</id>
-    <version>1.6.1</version>
+    <version>1.6.2</version>
     <title>TheaNet</title>
     <license type="expression">Apache-2.0</license>
     <iconUrl>https://github.com/Proxem/TheaNet/blob/master/logo/proxem.png?raw=true</iconUrl>
@@ -15,7 +15,7 @@
         The library is based on python's theano library and offers great tools to create deep learning models.
         Automatic gradient differentiation is available.
     </description>
-    <releaseNotes>.net standard 2.0 version</releaseNotes>
+    <releaseNotes>fix in compiler for .Net Framework and .Net Core projects</releaseNotes>
     <copyright></copyright>
     <tags>deep-learning nlp </tags>
     <summary>Deep-Learning library with automatic gradient differentiation</summary>
