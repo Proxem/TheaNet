@@ -491,10 +491,7 @@ namespace Proxem.TheaNet.Binding
         private static IEnumerable<string> GetTrustedPlatformAssemblies()
         {
             // see http://source.roslyn.io/#Microsoft.CodeAnalysis.Scripting/Hosting/Resolvers/RuntimeMetadataReferenceResolver.cs,180
-            var type = Type.GetType("System.AppContext, System.AppContext, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a");
-            var getData = (Func<string, object>)Delegate.CreateDelegate(typeof(Func<string, object>), type.GetTypeInfo().GetDeclaredMethod("GetData"));
-
-            if (getData.Invoke("TRUSTED_PLATFORM_ASSEMBLIES") is string paths)
+            if (AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES") is string paths)
             {
                 foreach (var path in paths.Split(Path.PathSeparator))
                 {
@@ -511,7 +508,6 @@ namespace Proxem.TheaNet.Binding
             var coreLib = CoreAssembly.Location;
             var references = new List<Microsoft.CodeAnalysis.MetadataReference>
             {
-                Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(coreLib),
                 // "Proxem.NumNet.dll" full path
                 Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(typeof(Proxem.NumNet.Random).Assembly.Location),
                 // "Proxem.TheaNet.dll" full path
@@ -519,10 +515,14 @@ namespace Proxem.TheaNet.Binding
             };
             if (IsDotnetCore)
             {
-                var coreDir = Path.GetDirectoryName(coreLib);
-                references.Add(Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(Path.Combine(coreDir, "System.Runtime.dll")));
-                references.Add(Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(Path.Combine(coreDir, "System.Console.dll")));
-                foreach (var assembly in GetTrustedPlatformAssemblies().Where(assembly => Path.GetFileName(assembly) == "netstandard.dll"))
+                var neededAssemblies = new[]
+                {
+                    "System.Runtime.dll",
+                    "System.Console.dll",
+                    "System.Private.CoreLib.dll",
+                    "netstandard.dll"
+                };
+                foreach (var assembly in GetTrustedPlatformAssemblies().Where(assembly => neededAssemblies.Contains(Path.GetFileName(assembly))))
                 {
                     references.Add(Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(assembly));
                 }
